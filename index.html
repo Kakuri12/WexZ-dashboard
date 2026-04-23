@@ -1202,10 +1202,14 @@ function renderCard(row, index) {
   const ft = (row.farm_type || 'public').toLowerCase();
   
   // ✅ แก้ไขส่วนดึงรูป Avatar
-  const userId = row.user_id ? row.user_id.toString().trim() : '';
-  const avatarUrl = userId && userId !== '0' 
-    ? `https://tr.rbxcdn.com/150/150/AvatarHeadshot/${userId}/Png`
-    : `https://ui-avatars.com/api/?name=${encodeURIComponent(row.display_name || row.player_name || '?')}&background=1a1a1a&color=fff&size=150`;
+// ✅ แก้ไขส่วนดึงรูป Avatar - ใช้ API ที่เสถียรกว่า
+const userId = row.user_id ? row.user_id.toString().trim() : '';
+const userName = row.display_name || row.player_name || '?';
+
+// ใช้ Roblox API หลัก (มีความเสถียรสูงสุด)
+const avatarUrl = userId && userId !== '0' && userId !== 'null' && userId !== ''
+  ? `https://www.roblox.com/headshot-thumbnail/image?userId=${userId}&width=150&height=150&format=png`
+  : `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=1a1a1a&color=fff&size=150&bold=true`;
 
   const animDelay = (index * 0.05) + 's';
   const farmBadge = ft === 'pro'
