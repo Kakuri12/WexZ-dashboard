@@ -660,7 +660,7 @@ function render() {
 
 async function loadAll() {
   const { data, error } = await sb.from('wexz_sessions').select('*').order('updated_at', {ascending: false});
-  if(error) { log('Load error: ' + error.message, 'error'); return; }
+  if(error) { log('Load error: ' + (error.message || JSON.stringify(error)), 'error'); return; }
   sessions = {};
   (data||[]).forEach(r => sessions[r.player_name] = r);
   render();
@@ -686,6 +686,17 @@ function subscribe() {
     });
 }
 
+function makeClient(url, key) {
+  return createClient(url, key, {
+    global: {
+      headers: {
+        'apikey': key,
+        'Authorization': 'Bearer ' + key
+      }
+    }
+  });
+}
+
 async function connect() {
   const url = document.getElementById('cfgUrl').value.trim();
   const key = document.getElementById('cfgKey').value.trim();
@@ -694,7 +705,7 @@ async function connect() {
   localStorage.setItem('wexz_url', url);
   localStorage.setItem('wexz_key', key);
 
-  sb = createClient(url, key);
+  sb = makeClient(url, key);
   document.getElementById('configOverlay').style.display = 'none';
   log('Connecting to Supabase...', 'info');
   await loadAll();
@@ -707,7 +718,7 @@ window.onload = () => {
   if(url && key) {
     document.getElementById('cfgUrl').value = url;
     document.getElementById('cfgKey').value = key;
-    sb = createClient(url, key);
+    sb = makeClient(url, key);
     document.getElementById('configOverlay').style.display = 'none';
     loadAll().then(() => subscribe());
     log('Auto-connected from saved config', 'success');
