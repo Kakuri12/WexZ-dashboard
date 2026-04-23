@@ -8,33 +8,24 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    /* WEXZ Monochrome Palette */
     --bg-base: #000000;
     --bg-surface: #0a0a0a;
     --bg-surface-hover: #121212;
     --border-light: rgba(255, 255, 255, 0.12);
     --border-highlight: rgba(255, 255, 255, 0.3);
-    
-    /* Accents (White & Grey) */
     --accent-primary: #ffffff; 
     --accent-glow: rgba(255, 255, 255, 0.15);
-    
-    /* Status Colors (Muted for dark mode) */
     --status-online: #10b981;
     --status-online-bg: rgba(16, 185, 129, 0.1);
     --status-offline: #f43f5e;
     --status-offline-bg: rgba(244, 63, 94, 0.1);
     --status-teleport: #f59e0b;
     --status-teleport-bg: rgba(245, 158, 11, 0.1);
-    
-    /* Text */
     --text-primary: #ffffff;
     --text-secondary: #a1a1aa;
     --text-muted: #52525b;
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   body {
     background-color: var(--bg-base);
     color: var(--text-primary);
@@ -44,19 +35,14 @@
     line-height: 1.5;
     background-image: radial-gradient(circle at 50% 0%, #111 0%, transparent 70%);
   }
-
-  /* Animations */
   @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
-  
   @keyframes pulseSoft {
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.6; transform: scale(0.95); }
   }
-
-  /* Header */
   header {
     background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(20px);
@@ -70,7 +56,6 @@
     top: 0;
     z-index: 100;
   }
-
   .brand {
     display: flex;
     align-items: center;
@@ -80,13 +65,11 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
   }
-
   .brand-logo {
     height: 38px;
     border-radius: 6px;
     object-fit: contain;
   }
-
   .brand-text-fallback {
     font-family: 'Inter', sans-serif;
     font-weight: 900;
@@ -96,14 +79,11 @@
     text-shadow: 2px 2px 0 #000, -1px -1px 0 #555;
     -webkit-text-stroke: 1px #fff;
   }
-
   .header-actions {
     display: flex;
     align-items: center;
     gap: 1.5rem;
   }
-
-  /* Settings Button */
   .settings-btn {
     background: transparent;
     border: 1px solid var(--border-light);
@@ -116,13 +96,11 @@
     cursor: pointer;
     transition: all 0.2s ease;
   }
-
   .settings-btn:hover {
     color: var(--text-primary);
     border-color: var(--text-primary);
     background: rgba(255, 255, 255, 0.05);
   }
-
   .live-indicator {
     display: flex;
     align-items: center;
@@ -137,28 +115,22 @@
     border: 1px solid var(--border-light);
     letter-spacing: 0.05em;
   }
-
   .live-dot {
     width: 6px; height: 6px;
     background: var(--text-primary);
     border-radius: 50%;
     animation: pulseSoft 2s infinite;
   }
-
   .clock {
     font-family: 'JetBrains Mono', monospace;
     color: var(--text-secondary);
     font-size: 0.9rem;
   }
-
-  /* Main Content */
   .container {
     max-width: 1600px;
     margin: 0 auto;
     padding: 2.5rem;
   }
-
-  /* Stats Grid */
   .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -166,7 +138,6 @@
     margin-bottom: 2rem;
     animation: fadeInUp 0.6s ease-out forwards;
   }
-
   .stat-card {
     background: var(--bg-surface);
     border: 1px solid var(--border-light);
@@ -177,12 +148,10 @@
     gap: 0.5rem;
     transition: transform 0.3s ease, border-color 0.3s ease;
   }
-
   .stat-card:hover {
     transform: translateY(-2px);
     border-color: var(--accent-primary);
   }
-
   .stat-title {
     color: var(--text-secondary);
     font-family: 'JetBrains Mono', monospace;
@@ -191,7 +160,6 @@
     text-transform: uppercase;
     letter-spacing: 0.1em;
   }
-
   .stat-value {
     font-family: 'JetBrains Mono', monospace;
     font-size: 2.5rem;
@@ -199,13 +167,10 @@
     color: var(--text-primary);
     line-height: 1;
   }
-
   .stat-desc {
     font-size: 0.8rem;
     color: var(--text-muted);
   }
-
-  /* Section Titles */
   .section-header {
     display: flex;
     align-items: center;
@@ -214,7 +179,6 @@
     animation: fadeInUp 0.6s ease-out 0.1s forwards;
     opacity: 0;
   }
-
   .section-title {
     font-size: 1.1rem;
     font-weight: 700;
@@ -222,21 +186,16 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
-
   .section-line {
     flex: 1;
     height: 1px;
     background: linear-gradient(90deg, var(--border-light), transparent);
   }
-
-  /* Sessions Grid */
   .sessions-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 1.5rem;
   }
-
-  /* Session Card Monochrome */
   .session-card {
     background: var(--bg-surface);
     border: 1px solid var(--border-light);
@@ -249,13 +208,11 @@
     display: flex;
     flex-direction: column;
   }
-
   .session-card:hover {
     transform: translateY(-4px);
     border-color: var(--border-highlight);
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
   }
-
   .card-top {
     display: flex;
     align-items: flex-start;
@@ -263,19 +220,16 @@
     margin-bottom: 1.5rem;
     gap: 0.5rem;
   }
-
   .user-info {
     display: flex;
     align-items: center;
     gap: 1rem;
   }
-
   .avatar-wrap {
     position: relative;
     width: 48px; height: 48px;
     flex-shrink: 0;
   }
-
   .avatar {
     width: 100%; height: 100%;
     border-radius: 10px;
@@ -284,7 +238,6 @@
     border: 1px solid var(--border-light);
     filter: grayscale(20%);
   }
-
   .status-ring {
     position: absolute;
     bottom: -2px; right: -2px;
@@ -295,13 +248,11 @@
   .status-online .status-ring { background: var(--status-online); }
   .status-offline .status-ring { background: var(--status-offline); }
   .status-teleport .status-ring { background: var(--status-teleport); }
-
   .user-names {
     display: flex;
     flex-direction: column;
     overflow: hidden;
   }
-
   .display-name {
     font-weight: 700;
     font-size: 1rem;
@@ -310,7 +261,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
   .username {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.75rem;
@@ -319,7 +269,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
   .status-pill {
     font-size: 0.7rem;
     font-family: 'JetBrains Mono', monospace;
@@ -334,8 +283,6 @@
   .status-online .status-pill { border-color: rgba(16, 185, 129, 0.3); color: var(--status-online); }
   .status-offline .status-pill { border-color: rgba(244, 63, 94, 0.3); color: var(--status-offline); }
   .status-teleport .status-pill { border-color: rgba(245, 158, 11, 0.3); color: var(--status-teleport); }
-
-  /* Detail Grid */
   .detail-grid {
     display: flex;
     flex-direction: column;
@@ -346,14 +293,12 @@
     border: 1px solid rgba(255, 255, 255, 0.05);
     flex-grow: 1;
   }
-
   .detail-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
   }
-
   .detail-label {
     font-size: 0.75rem;
     color: var(--text-secondary);
@@ -362,7 +307,6 @@
     gap: 0.6rem;
     flex-shrink: 0;
   }
-
   .detail-value {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.85rem;
@@ -373,11 +317,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
   .value-good { color: var(--status-online); }
   .value-warn { color: var(--status-teleport); }
   .value-bad { color: var(--status-offline); }
-
   .card-footer {
     margin-top: 1.5rem;
     display: flex;
@@ -385,7 +327,6 @@
     align-items: center;
     gap: 1rem;
   }
-
   .script-badge {
     background: rgba(255, 255, 255, 0.05);
     color: var(--text-primary);
@@ -401,20 +342,16 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
   .script-badge::before {
     content: '◇';
     font-size: 0.9rem;
     color: var(--text-secondary);
   }
-
   .time-ago {
     font-size: 0.75rem;
     color: var(--text-muted);
     flex-shrink: 0;
   }
-
-  /* Copyable Row */
   .copyable-row {
     cursor: pointer;
     border-radius: 4px;
@@ -422,22 +359,17 @@
     padding: 0.3rem 0.5rem;
     margin: -0.3rem -0.5rem;
   }
-
   .copyable-row:hover {
     background: rgba(255, 255, 255, 0.08);
   }
-
   .copy-icon {
     opacity: 0;
     font-size: 0.8rem;
     transition: opacity 0.2s ease;
   }
-
   .copyable-row:hover .copy-icon {
     opacity: 1;
   }
-
-  /* Toast */
   .toast-container {
     position: fixed;
     bottom: 2rem;
@@ -448,7 +380,6 @@
     gap: 0.5rem;
     pointer-events: none;
   }
-
   .toast {
     background: var(--text-primary);
     color: var(--bg-base);
@@ -463,18 +394,14 @@
     gap: 0.75rem;
     pointer-events: auto;
   }
-
   .toast.error {
     background: var(--status-offline);
     color: white;
   }
-
   @keyframes slideInRight {
     from { transform: translateX(120%); opacity: 0; }
     to { transform: translateX(0); opacity: 1; }
   }
-
-  /* Empty State */
   .empty-state {
     grid-column: 1 / -1;
     display: flex;
@@ -489,14 +416,11 @@
     animation: fadeInUp 0.5s ease-out;
     text-align: center;
   }
-
-  /* Log Panel */
   .log-container {
     margin-top: 2rem;
     animation: fadeInUp 0.6s ease-out 0.2s forwards;
     opacity: 0;
   }
-  
   .log-panel {
     background: #050505;
     border: 1px solid var(--border-light);
@@ -507,7 +431,6 @@
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.8rem;
   }
-
   .log-line {
     padding: 0.3rem 0;
     border-bottom: 1px dotted rgba(255,255,255,0.1);
@@ -515,15 +438,12 @@
     gap: 1rem;
     word-break: break-all;
   }
-  
   .log-line:last-child { border-bottom: none; }
   .log-time { color: var(--text-muted); min-width: 70px; flex-shrink: 0; }
   .log-msg.success { color: var(--status-online); }
   .log-msg.error { color: var(--status-offline); }
   .log-msg.info { color: var(--text-primary); }
   .log-msg.system { color: var(--text-secondary); }
-
-  /* Config Overlay (Premium Modal) */
   .config-overlay {
     position: fixed;
     inset: 0;
@@ -537,7 +457,6 @@
     transition: opacity 0.3s ease;
     padding: 1rem;
   }
-
   .config-box {
     background: var(--bg-base);
     border: 1px solid var(--border-highlight);
@@ -550,7 +469,6 @@
     max-height: 90vh;
     overflow-y: auto;
   }
-
   .close-config-btn {
     position: absolute;
     top: 1rem;
@@ -564,15 +482,12 @@
     line-height: 1;
     display: none;
   }
-
   .close-config-btn:hover {
     color: var(--text-primary);
   }
-
   .config-header {
     margin-bottom: 2rem;
   }
-
   .config-title {
     font-size: 1.5rem;
     font-weight: 800;
@@ -581,16 +496,13 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
-
   .config-subtitle {
     color: var(--text-secondary);
     font-size: 0.9rem;
   }
-
   .input-group {
     margin-bottom: 1.5rem;
   }
-
   .input-label {
     display: block;
     font-family: 'JetBrains Mono', monospace;
@@ -600,7 +512,6 @@
     margin-bottom: 0.5rem;
     text-transform: uppercase;
   }
-
   .config-input {
     width: 100%;
     background: #050505;
@@ -613,19 +524,16 @@
     outline: none;
     transition: all 0.2s ease;
   }
-
   .config-input:focus {
     border-color: var(--text-primary);
     background: #111;
   }
-
   .error-msg {
     color: var(--status-offline);
     font-size: 0.85rem;
     margin-bottom: 1rem;
     display: none;
   }
-
   .btn-primary {
     width: 100%;
     background: var(--text-primary);
@@ -641,11 +549,9 @@
     transition: opacity 0.2s ease;
     flex: 1;
   }
-
   .btn-primary:hover {
     opacity: 0.8;
   }
-
   .btn-secondary {
     width: 100%;
     background: transparent;
@@ -662,24 +568,18 @@
     flex: 1;
     display: none;
   }
-
   .btn-secondary:hover {
     background: var(--status-offline-bg);
   }
-
   .button-group {
     display: flex;
     gap: 1rem;
     margin-top: 2rem;
   }
-
-  /* Scrollbar */
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border-highlight); border-radius: 10px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
-
-  /* ── Farm Type Filter Tabs ── */
   .filter-bar {
     display: flex;
     align-items: center;
@@ -687,7 +587,6 @@
     margin-bottom: 1.5rem;
     flex-wrap: wrap;
   }
-
   .filter-tab {
     display: flex;
     align-items: center;
@@ -705,31 +604,26 @@
     cursor: pointer;
     transition: all 0.15s ease;
   }
-
   .filter-tab:hover {
     border-color: var(--border-highlight);
     color: var(--text-primary);
     background: rgba(255,255,255,0.04);
   }
-
   .filter-tab.active {
     background: var(--text-primary);
     color: var(--bg-base);
     border-color: var(--text-primary);
   }
-
   .filter-tab.active.pro {
     background: #a78bfa;
     border-color: #a78bfa;
     color: #1a0a2e;
   }
-
   .filter-tab.active.public {
     background: #34d399;
     border-color: #34d399;
     color: #022c1a;
   }
-
   .tab-count {
     display: inline-flex;
     align-items: center;
@@ -742,9 +636,7 @@
     padding: 0 5px;
     background: rgba(255,255,255,0.12);
   }
-
   .filter-tab.active .tab-count { background: rgba(0,0,0,0.2); }
-
   .farm-badge {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.6rem;
@@ -755,30 +647,24 @@
     text-transform: uppercase;
     flex-shrink: 0;
   }
-
   .farm-badge.pro {
     background: rgba(167,139,250,0.15);
     color: #a78bfa;
     border: 1px solid rgba(167,139,250,0.3);
   }
-
   .farm-badge.public {
     background: rgba(52,211,153,0.12);
     color: #34d399;
     border: 1px solid rgba(52,211,153,0.25);
   }
-
   .session-card.farm-pro { border-color: rgba(167,139,250,0.2); }
   .session-card.farm-pro:hover { border-color: rgba(167,139,250,0.4); }
-
-  /* stat split row */
   .stats-split {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
     margin-bottom: 2rem;
   }
-
   .split-card {
     background: var(--bg-surface);
     border: 1px solid var(--border-light);
@@ -788,12 +674,10 @@
     align-items: center;
     gap: 1rem;
   }
-
   .split-icon {
     font-size: 1.4rem;
     flex-shrink: 0;
   }
-
   .split-label {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.65rem;
@@ -802,124 +686,38 @@
     text-transform: uppercase;
     margin-bottom: 2px;
   }
-
   .split-value {
     font-size: 1.4rem;
     font-weight: 700;
     line-height: 1;
   }
-
   .split-value.pro { color: #a78bfa; }
   .split-value.public { color: #34d399; }
-
-  /* =========================================
-     RESPONSIVE DESIGN (Media Queries)
-     ========================================= */
-
-  /* สำหรับ Tablet และมือถือจอใหญ่ */
   @media (max-width: 1024px) {
-    .container {
-      padding: 1.5rem;
-    }
+    .container { padding: 1.5rem; }
   }
-
-  /* สำหรับมือถือทั่วไป */
   @media (max-width: 768px) {
-    header {
-      padding: 1rem 1.5rem;
-      flex-direction: column;
-      gap: 1rem;
-      align-items: center;
-    }
-    
-    .header-actions {
-      width: 100%;
-      justify-content: space-between;
-    }
-
-    .container {
-      padding: 1rem;
-    }
-
-    .stats-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-    }
-
-    .stat-card {
-      padding: 1rem;
-    }
-
-    .stat-value {
-      font-size: 2rem;
-    }
-
-    .config-box {
-      padding: 2rem 1.5rem;
-    }
-
-    .button-group {
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-    
-    .toast-container {
-      bottom: 1rem;
-      right: 1rem;
-      left: 1rem;
-      align-items: stretch;
-    }
-    
-    .toast {
-      justify-content: center;
-      text-align: center;
-    }
+    header { padding: 1rem 1.5rem; flex-direction: column; gap: 1rem; align-items: center; }
+    .header-actions { width: 100%; justify-content: space-between; }
+    .container { padding: 1rem; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .stat-card { padding: 1rem; }
+    .stat-value { font-size: 2rem; }
+    .config-box { padding: 2rem 1.5rem; }
+    .button-group { flex-direction: column; gap: 0.75rem; }
+    .toast-container { bottom: 1rem; right: 1rem; left: 1rem; align-items: stretch; }
+    .toast { justify-content: center; text-align: center; }
   }
-
-  /* สำหรับมือถือจอเล็ก (เช่น iPhone SE) */
   @media (max-width: 480px) {
-    .stats-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .stats-split {
-      grid-template-columns: 1fr;
-    }
-
-    .sessions-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .filter-tab {
-      flex: 1;
-      justify-content: center;
-      font-size: 0.7rem;
-      padding: 0.5rem;
-    }
-
-    .card-top {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 1rem;
-    }
-
-    .card-top > div:last-child {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-    }
-
-    .detail-label, .detail-value {
-      font-size: 0.8rem;
-    }
-
-    .detail-value {
-      max-width: 65%;
-    }
-
-    .log-panel {
-      height: 150px;
-    }
+    .stats-grid { grid-template-columns: 1fr; }
+    .stats-split { grid-template-columns: 1fr; }
+    .sessions-grid { grid-template-columns: 1fr; }
+    .filter-tab { flex: 1; justify-content: center; font-size: 0.7rem; padding: 0.5rem; }
+    .card-top { flex-direction: column; align-items: stretch; gap: 1rem; }
+    .card-top > div:last-child { display: flex; justify-content: space-between; width: 100%; }
+    .detail-label, .detail-value { font-size: 0.8rem; }
+    .detail-value { max-width: 65%; }
+    .log-panel { height: 150px; }
   }
 </style>
 </head>
@@ -927,29 +725,22 @@
 
 <div class="config-overlay" id="configOverlay">
   <div class="config-box">
-    <!-- ปุ่มปิด (จะแสดงก็ต่อเมื่อเชื่อมต่อแล้วเท่านั้น) -->
     <button class="close-config-btn" id="closeConfigBtn" onclick="closeConfig()" title="ปิดหน้าต่าง">&times;</button>
-
     <div class="config-header">
       <div class="config-title">Connect Database</div>
       <div class="config-subtitle">กรุณาใส่ข้อมูล Supabase เพื่อเข้าสู่ระบบ WEXZ</div>
     </div>
-
     <div class="input-group">
       <label class="input-label">Supabase URL</label>
       <input class="config-input" id="cfgUrl" placeholder="https://xxxxxxxx.supabase.co" autocomplete="off" />
     </div>
-
     <div class="input-group">
       <label class="input-label">Supabase Anon Key</label>
       <input class="config-input" id="cfgKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." type="password" autocomplete="off" />
     </div>
-
     <div class="error-msg" id="loginError">⚠️ ข้อมูลไม่ครบถ้วน กรุณาตรวจสอบ URL และ Key</div>
-
     <div class="button-group">
       <button class="btn-primary" onclick="connect()">Connect</button>
-      <!-- ปุ่ม Disconnect (จะแสดงก็ต่อเมื่อเชื่อมต่อแล้วเท่านั้น) -->
       <button class="btn-secondary" id="disconnectBtn" onclick="disconnect()">Disconnect</button>
     </div>
   </div>
@@ -961,7 +752,6 @@
     <span style="color: var(--text-secondary); font-weight: 500; font-size: 0.9rem;">DASHBOARD</span>
   </div>
   <div class="header-actions">
-    <!-- ปุ่มตั้งค่าเรียกหน้า Config -->
     <button class="settings-btn" onclick="openConfig()" title="Database Settings">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;">
         <circle cx="12" cy="12" r="3"></circle>
@@ -977,7 +767,6 @@
 </header>
 
 <div class="container">
-  <!-- Stats Grid -->
   <div class="stats-grid">
     <div class="stat-card">
       <div class="stat-title">Active Players</div>
@@ -1001,7 +790,6 @@
     </div>
   </div>
 
-  <!-- Pro / Public Split Stats -->
   <div class="stats-split">
     <div class="split-card">
       <div class="split-icon">🔒</div>
@@ -1019,13 +807,11 @@
     </div>
   </div>
 
-  <!-- Active Sessions -->
   <div class="section-header">
     <h2 class="section-title">Session Monitoring</h2>
     <div class="section-line"></div>
   </div>
 
-  <!-- Filter Tabs -->
   <div class="filter-bar">
     <button class="filter-tab active" id="tab-all" onclick="setFilter('all')">
       ALL <span class="tab-count" id="cnt-all">0</span>
@@ -1050,7 +836,6 @@
     </div>
   </div>
 
-  <!-- System Logs -->
   <div class="log-container">
     <div class="section-header">
       <h2 class="section-title" style="font-size: 0.9rem; color: var(--text-secondary);">System Terminal</h2>
@@ -1073,7 +858,6 @@ let sb = null;
 let sessions = {};
 let pollInterval = null;
 
-// Helpers
 function log(msg, type='system') {
   const p = document.getElementById('logPanel');
   const now = new Date().toLocaleTimeString('th-TH', {hour12:false});
@@ -1122,12 +906,10 @@ function getPingClass(ping) {
 
 function copyServerId(text, event) {
   if (event) event.stopPropagation();
-
   if (!text || text === 'N/A' || text === 'null') {
     showToast('ไม่มี Server ID ให้คัดลอก', 'error');
     return;
   }
-
   const el = document.createElement('textarea');
   el.value = text;
   el.setAttribute('readonly', '');
@@ -1135,7 +917,6 @@ function copyServerId(text, event) {
   el.style.left = '-9999px';
   document.body.appendChild(el);
   el.select();
-  
   try {
     document.execCommand('copy');
     showToast(`คัดลอก Server ID: ${text.slice(0, 8)}... สำเร็จ`);
@@ -1151,7 +932,6 @@ function showToast(msg, type = 'success') {
   toast.className = `toast ${type}`;
   toast.textContent = msg;
   container.appendChild(toast);
-  
   setTimeout(() => {
     toast.style.opacity = '0';
     toast.style.transform = 'translateX(100%)';
@@ -1160,12 +940,10 @@ function showToast(msg, type = 'success') {
   }, 3000);
 }
 
-// ── หน้าต่าง Config & Disconnect ──
 function openConfig() {
   const overlay = document.getElementById('configOverlay');
   overlay.style.display = 'flex';
   setTimeout(() => overlay.style.opacity = '1', 10);
-  
   const isConnected = !!localStorage.getItem('wexz_url');
   document.getElementById('closeConfigBtn').style.display = isConnected ? 'block' : 'none';
   document.getElementById('disconnectBtn').style.display = isConnected ? 'block' : 'none';
@@ -1182,35 +960,25 @@ function disconnect() {
   localStorage.removeItem('wexz_key');
   document.getElementById('cfgUrl').value = '';
   document.getElementById('cfgKey').value = '';
-  
   sb = null;
   if(pollInterval) clearInterval(pollInterval);
-  
   sessions = {};
   render();
-  
   document.getElementById('closeConfigBtn').style.display = 'none';
   document.getElementById('disconnectBtn').style.display = 'none';
-  
   log('Disconnected from database. Cleared credentials.', 'error');
   showToast('ยกเลิกการเชื่อมต่อสำเร็จ', 'success');
 }
 
-// Render Functions
+// ✅ ฟังก์ชัน renderCard ที่แก้ไขแล้ว (ใช้ ui-avatars.com)
 function renderCard(row, index) {
   const sc = getStatusClass(row.status);
   const ft = (row.farm_type || 'public').toLowerCase();
   
-  // ✅ แก้ไขส่วนดึงรูป Avatar
-// ✅ แก้ไขส่วนดึงรูป Avatar - ใช้ API ที่เสถียรกว่า
-const userId = row.user_id ? row.user_id.toString().trim() : '';
-const userName = row.display_name || row.player_name || '?';
-
-// ใช้ Roblox API หลัก (เสถียรที่สุด)
-const avatarUrl = userId && userId !== '0' && userId !== 'null' && userId !== ''
-  ? `https://www.roblox.com/headshot-thumbnail/image?userId=${userId}&width=150&height=150&format=png`
-  : `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=1a1a1a&color=fff&size=150&bold=true`;
-
+  const userName = row.display_name || row.player_name || '?';
+  
+  // ✅ ใช้ ui-avatars.com (ทำงานได้บน Netlify 100%)
+  const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=1a1a1a&color=fff&size=150&bold=true&length=2`;
 
   const animDelay = (index * 0.05) + 's';
   const farmBadge = ft === 'pro'
@@ -1222,10 +990,11 @@ const avatarUrl = userId && userId !== '0' && userId !== 'null' && userId !== ''
       <div class="card-top">
         <div class="user-info">
           <div class="avatar-wrap">
-           <img class="avatar" 
-               src="${avatarUrl}" 
-               referrerpolicy="no-referrer"
-               onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=1a1a1a&color=fff&size=150&bold=true'" />
+            <img class="avatar" 
+                 src="${avatarUrl}" 
+                 referrerpolicy="no-referrer"
+                 loading="lazy"
+                 onerror="this.style.background='#111'" />
             <div class="status-ring"></div>
           </div>
           <div class="user-names">
@@ -1285,7 +1054,6 @@ function setFilter(f) {
 function render() {
   const grid = document.getElementById('sessionsGrid');
   const rows = Object.values(sessions);
-
   const proRows    = rows.filter(r => (r.farm_type||'public').toLowerCase() === 'pro');
   const publicRows = rows.filter(r => (r.farm_type||'public').toLowerCase() !== 'pro');
   const onlineCount = rows.filter(r => getStatusClass(r.status) === 'online').length;
@@ -1340,34 +1108,27 @@ async function loadAll() {
 
 function startPolling() {
   log('System Connected. Long Polling synchronization active ✓', 'success');
-  
   if (pollInterval) clearInterval(pollInterval);
-  
   pollInterval = setInterval(async () => {
     if (!sb) return;
     const { data, error } = await sb.from('wexz_sessions').select('*').order('updated_at', {ascending: false});
     if(error) return;
-
     const newSessions = {};
     (data||[]).forEach(r => newSessions[r.player_name] = r);
-
     for (const player in sessions) {
       if (!newSessions[player]) {
         log(`Session terminated: @${player}`, 'error');
       }
     }
-
     for (const player in newSessions) {
       const isNew = !sessions[player];
       const statusChanged = !isNew && sessions[player].status !== newSessions[player].status;
-
       if (isNew || statusChanged) {
         const sc = getStatusClass(newSessions[player].status);
         const logType = sc === 'online' ? 'success' : (sc === 'offline' ? 'error' : 'info');
         log(`Status update: @${player} is now ${newSessions[player].status}`, logType);
       }
     }
-
     sessions = newSessions;
     render();
   }, 5000);
@@ -1377,20 +1138,15 @@ async function connect() {
   const url = document.getElementById('cfgUrl').value.trim();
   const key = document.getElementById('cfgKey').value.trim();
   const errorMsg = document.getElementById('loginError');
-  
   if(!url || !key) { 
     errorMsg.style.display = 'block';
     return; 
   }
-
   errorMsg.style.display = 'none';
   localStorage.setItem('wexz_url', url);
   localStorage.setItem('wexz_key', key);
-
   sb = createClient(url, key);
-  
   closeConfig();
-  
   log('Connecting to Supabase cluster...', 'info');
   await loadAll();
   startPolling();
@@ -1404,13 +1160,10 @@ window.onload = () => {
     document.getElementById('cfgUrl').value = url;
     document.getElementById('cfgKey').value = key;
     sb = createClient(url, key);
-    
     document.getElementById('configOverlay').style.display = 'none';
-    
     loadAll().then(() => startPolling());
     log('Auto-authenticated from secure storage.', 'info');
   } else {
-    // โชว์หน้าต่างตั้งแต่แรกถ้าไม่มีการเชื่อมต่อ
     openConfig();
   }
 };
