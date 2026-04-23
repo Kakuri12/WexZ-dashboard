@@ -8,19 +8,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
+    /* WEXZ Monochrome Palette */
     --bg-base: #000000;
     --bg-surface: #0a0a0a;
     --bg-surface-hover: #121212;
     --border-light: rgba(255, 255, 255, 0.12);
     --border-highlight: rgba(255, 255, 255, 0.3);
-    --accent-primary: #ffffff;
+    
+    /* Accents (White & Grey) */
+    --accent-primary: #ffffff; 
     --accent-glow: rgba(255, 255, 255, 0.15);
+    
+    /* Status Colors (Muted for dark mode) */
     --status-online: #10b981;
     --status-online-bg: rgba(16, 185, 129, 0.1);
     --status-offline: #f43f5e;
     --status-offline-bg: rgba(244, 63, 94, 0.1);
     --status-teleport: #f59e0b;
     --status-teleport-bg: rgba(245, 158, 11, 0.1);
+    
+    /* Text */
     --text-primary: #ffffff;
     --text-secondary: #a1a1aa;
     --text-muted: #52525b;
@@ -38,16 +45,18 @@
     background-image: radial-gradient(circle at 50% 0%, #111 0%, transparent 70%);
   }
 
+  /* Animations */
   @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
-
+  
   @keyframes pulseSoft {
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.6; transform: scale(0.95); }
   }
 
+  /* Header */
   header {
     background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(20px);
@@ -78,6 +87,7 @@
     object-fit: contain;
   }
 
+  /* กรณีรูปไม่ขึ้น ให้ใช้ Text สไตล์โลโก้แทน */
   .brand-text-fallback {
     font-family: 'Inter', sans-serif;
     font-weight: 900;
@@ -94,7 +104,6 @@
     gap: 1.5rem;
   }
 
-  /* FIX #8: live-indicator มี 3 state */
   .live-indicator {
     display: flex;
     align-items: center;
@@ -108,15 +117,11 @@
     border-radius: 4px;
     border: 1px solid var(--border-light);
     letter-spacing: 0.05em;
-    transition: all 0.3s ease;
   }
-  .live-indicator.state-waiting { color: var(--text-muted); border-color: var(--border-light); }
-  .live-indicator.state-live { color: var(--status-online); border-color: rgba(16,185,129,0.4); background: rgba(16,185,129,0.05); }
-  .live-indicator.state-error { color: var(--status-offline); border-color: rgba(244,63,94,0.4); background: rgba(244,63,94,0.05); }
 
   .live-dot {
     width: 6px; height: 6px;
-    background: currentColor;
+    background: var(--text-primary);
     border-radius: 50%;
     animation: pulseSoft 2s infinite;
   }
@@ -127,12 +132,14 @@
     font-size: 0.9rem;
   }
 
+  /* Main Content */
   .container {
     max-width: 1600px;
     margin: 0 auto;
     padding: 2.5rem;
   }
 
+  /* Stats Grid */
   .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -179,6 +186,7 @@
     color: var(--text-muted);
   }
 
+  /* Section Titles */
   .section-header {
     display: flex;
     align-items: center;
@@ -202,12 +210,14 @@
     background: linear-gradient(90deg, var(--border-light), transparent);
   }
 
+  /* Sessions Grid */
   .sessions-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
     gap: 1.5rem;
   }
 
+  /* Session Card Monochrome */
   .session-card {
     background: var(--bg-surface);
     border: 1px solid var(--border-light);
@@ -219,18 +229,13 @@
     position: relative;
   }
 
-  /* FIX #4: card ที่ไม่ใช่ใหม่ ไม่ animate ซ้ำ */
-  .session-card.no-anim {
-    opacity: 1;
-    animation: none;
-  }
-
   .session-card:hover {
     transform: translateY(-4px);
     border-color: var(--border-highlight);
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
   }
 
+  /* Status Dot instead of Top Line */
   .card-top {
     display: flex;
     align-items: flex-start;
@@ -255,7 +260,7 @@
     object-fit: cover;
     background: #111;
     border: 1px solid var(--border-light);
-    filter: grayscale(20%);
+    filter: grayscale(20%); /* คุมโทนภาพให้เข้ากับความดาร์ก */
   }
 
   .status-ring {
@@ -269,7 +274,10 @@
   .status-offline .status-ring { background: var(--status-offline); }
   .status-teleport .status-ring { background: var(--status-teleport); }
 
-  .user-names { display: flex; flex-direction: column; }
+  .user-names {
+    display: flex;
+    flex-direction: column;
+  }
 
   .display-name {
     font-weight: 700;
@@ -297,11 +305,12 @@
   .status-offline .status-pill { border-color: rgba(244, 63, 94, 0.3); color: var(--status-offline); }
   .status-teleport .status-pill { border-color: rgba(245, 158, 11, 0.3); color: var(--status-teleport); }
 
+  /* Detail Grid (Darker inside) */
   .detail-grid {
     display: flex;
     flex-direction: column;
     gap: 0.85rem;
-    background: #050505;
+    background: #050505; 
     border-radius: 8px;
     padding: 1.25rem;
     border: 1px solid rgba(255, 255, 255, 0.05);
@@ -368,6 +377,7 @@
     color: var(--text-muted);
   }
 
+  /* ระบบคลิกคัดลอก และ แจ้งเตือน Toast */
   .copyable-row {
     cursor: pointer;
     border-radius: 4px;
@@ -424,6 +434,7 @@
     to { transform: translateX(0); opacity: 1; }
   }
 
+  /* Empty State */
   .empty-state {
     grid-column: 1 / -1;
     display: flex;
@@ -438,12 +449,13 @@
     animation: fadeInUp 0.5s ease-out;
   }
 
+  /* Log Panel */
   .log-container {
     margin-top: 2rem;
     animation: fadeInUp 0.6s ease-out 0.2s forwards;
     opacity: 0;
   }
-
+  
   .log-panel {
     background: #050505;
     border: 1px solid var(--border-light);
@@ -461,7 +473,7 @@
     display: flex;
     gap: 1rem;
   }
-
+  
   .log-line:last-child { border-bottom: none; }
   .log-time { color: var(--text-muted); min-width: 70px; }
   .log-msg.success { color: var(--status-online); }
@@ -469,6 +481,7 @@
   .log-msg.info { color: var(--text-primary); }
   .log-msg.system { color: var(--text-secondary); }
 
+  /* Config Overlay (Premium Modal) */
   .config-overlay {
     position: fixed;
     inset: 0;
@@ -491,7 +504,9 @@
     box-shadow: 0 25px 50px rgba(255, 255, 255, 0.05);
   }
 
-  .config-header { margin-bottom: 2rem; }
+  .config-header {
+    margin-bottom: 2rem;
+  }
 
   .config-title {
     font-size: 1.5rem;
@@ -507,7 +522,9 @@
     font-size: 0.9rem;
   }
 
-  .input-group { margin-bottom: 1.5rem; }
+  .input-group {
+    margin-bottom: 1.5rem;
+  }
 
   .input-label {
     display: block;
@@ -559,12 +576,150 @@
     transition: opacity 0.2s ease;
   }
 
-  .btn-primary:hover { opacity: 0.8; }
+  .btn-primary:hover {
+    opacity: 0.8;
+  }
 
+  /* Scrollbar */
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border-highlight); border-radius: 10px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+  /* ── Farm Type Filter Tabs ── */
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-tab {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.1rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-light);
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .filter-tab:hover {
+    border-color: var(--border-highlight);
+    color: var(--text-primary);
+    background: rgba(255,255,255,0.04);
+  }
+
+  .filter-tab.active {
+    background: var(--text-primary);
+    color: var(--bg-base);
+    border-color: var(--text-primary);
+  }
+
+  .filter-tab.active.pro {
+    background: #a78bfa;
+    border-color: #a78bfa;
+    color: #1a0a2e;
+  }
+
+  .filter-tab.active.public {
+    background: #34d399;
+    border-color: #34d399;
+    color: #022c1a;
+  }
+
+  .tab-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 20px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0 5px;
+    background: rgba(255,255,255,0.12);
+  }
+
+  .filter-tab.active .tab-count { background: rgba(0,0,0,0.2); }
+
+  /* farm type badge บน card */
+  .farm-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .farm-badge.pro {
+    background: rgba(167,139,250,0.15);
+    color: #a78bfa;
+    border: 1px solid rgba(167,139,250,0.3);
+  }
+
+  .farm-badge.public {
+    background: rgba(52,211,153,0.12);
+    color: #34d399;
+    border: 1px solid rgba(52,211,153,0.25);
+  }
+
+  /* pro card accent */
+  .session-card.farm-pro { border-color: rgba(167,139,250,0.2); }
+  .session-card.farm-pro:hover { border-color: rgba(167,139,250,0.4); }
+
+  /* stat split row */
+  .stats-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .split-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .split-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  .split-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .split-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .split-value.pro { color: #a78bfa; }
+  .split-value.public { color: #34d399; }
 </style>
 </head>
 <body>
@@ -576,14 +731,13 @@
       <div class="config-subtitle">กรุณาใส่ข้อมูล Supabase เพื่อเข้าสู่ระบบ WEXZ</div>
     </div>
 
-    <!-- FIX #10: เพิ่ม for attribute ใน label -->
     <div class="input-group">
-      <label class="input-label" for="cfgUrl">Supabase URL</label>
+      <label class="input-label">Supabase URL</label>
       <input class="config-input" id="cfgUrl" placeholder="https://xxxxxxxx.supabase.co" autocomplete="off" />
     </div>
 
     <div class="input-group">
-      <label class="input-label" for="cfgKey">Supabase Anon Key</label>
+      <label class="input-label">Supabase Anon Key</label>
       <input class="config-input" id="cfgKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." type="password" autocomplete="off" />
     </div>
 
@@ -595,21 +749,21 @@
 
 <header>
   <div class="brand">
-    <!-- FIX #9: ใช้ encodeURIComponent path + fallback ทำงานเหมือนเดิม -->
-    <img src="%E0%B8%AA%E0%B8%B3%E0%B9%80%E0%B8%99%E0%B8%B2%E0%B8%82%E0%B8%AD%E0%B8%87+%E0%B8%9B%E0%B9%89%E0%B8%B2%E0%B8%A2%E0%B8%9F%E0%B8%B2%E0%B8%A3%E0%B9%8C%E0%B8%A1+(1).jpg" alt="WEXZ" class="brand-logo" onerror="this.outerHTML=`<span class='brand-text-fallback'>WEXZ</span>`" />
+    <!-- แก้ไขการใช้ Quotes ในส่วน onerror ด้วยการใช้ Backticks แทนเพื่อป้องกัน SyntaxError -->
+    <img src="สำเนาของ ป้ายฟาร์ม (1).jpg" alt="WEXZ" class="brand-logo" onerror="this.outerHTML=`<span class='brand-text-fallback'>WEXZ</span>`" />
     <span style="color: var(--text-secondary); font-weight: 500; font-size: 0.9rem;">DASHBOARD</span>
   </div>
   <div class="header-actions">
-    <!-- FIX #8: เริ่มต้นเป็น state-waiting แทน SYNCING -->
-    <div class="live-indicator state-waiting" id="liveIndicator">
+    <div class="live-indicator">
       <div class="live-dot"></div>
-      <span id="liveText">WAITING</span>
+      SYNCING
     </div>
     <div class="clock" id="clock">--:--:--</div>
   </div>
 </header>
 
 <div class="container">
+  <!-- Stats Grid -->
   <div class="stats-grid">
     <div class="stat-card">
       <div class="stat-title">Active Players</div>
@@ -633,9 +787,41 @@
     </div>
   </div>
 
+  <!-- Pro / Public Split Stats -->
+  <div class="stats-split">
+    <div class="split-card">
+      <div class="split-icon">🔒</div>
+      <div>
+        <div class="split-label">Pro Farm</div>
+        <div class="split-value pro" id="statPro">0</div>
+      </div>
+    </div>
+    <div class="split-card">
+      <div class="split-icon">🌐</div>
+      <div>
+        <div class="split-label">Public Farm</div>
+        <div class="split-value public" id="statPublic">0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Active Sessions -->
   <div class="section-header">
     <h2 class="section-title">Session Monitoring</h2>
     <div class="section-line"></div>
+  </div>
+
+  <!-- Filter Tabs -->
+  <div class="filter-bar">
+    <button class="filter-tab active" id="tab-all" onclick="setFilter('all')">
+      ALL <span class="tab-count" id="cnt-all">0</span>
+    </button>
+    <button class="filter-tab pro" id="tab-pro" onclick="setFilter('pro')">
+      🔒 PRO <span class="tab-count" id="cnt-pro">0</span>
+    </button>
+    <button class="filter-tab public" id="tab-public" onclick="setFilter('public')">
+      🌐 PUBLIC <span class="tab-count" id="cnt-public">0</span>
+    </button>
   </div>
 
   <div class="sessions-grid" id="sessionsGrid">
@@ -650,6 +836,7 @@
     </div>
   </div>
 
+  <!-- System Logs -->
   <div class="log-container">
     <div class="section-header">
       <h2 class="section-title" style="font-size: 0.9rem; color: var(--text-secondary);">System Terminal</h2>
@@ -664,148 +851,99 @@
   </div>
 </div>
 
+<!-- เพิ่มคอนเทนเนอร์สำหรับใส่ Toast การแจ้งเตือน -->
 <div id="toastContainer" class="toast-container"></div>
 
 <script>
+// ระวัง! อย่าเรียกใช้คำสั่ง websocket หรือ subscribe เพื่อป้องกัน Error ใน Canvas
 const { createClient } = supabase;
 let sb = null;
 let sessions = {};
 let pollInterval = null;
 
-// ============================================================
-// FIX #1: escapeHtml — ป้องกัน XSS ก่อน inject ลง innerHTML
-// ============================================================
-function escapeHtml(str) {
-  if (str == null) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
-
-// Helper: Logging (ใช้ textContent แทน innerHTML เพื่อความปลอดภัย)
-function log(msg, type = 'system') {
+// Helper: Logging
+function log(msg, type='system') {
   const p = document.getElementById('logPanel');
-  const now = new Date().toLocaleTimeString('th-TH', { hour12: false });
+  const now = new Date().toLocaleTimeString('th-TH', {hour12:false});
   const d = document.createElement('div');
   d.className = 'log-line';
-
-  const timeSpan = document.createElement('span');
-  timeSpan.className = 'log-time';
-  timeSpan.textContent = `[${now}]`;
-
-  const msgSpan = document.createElement('span');
-  msgSpan.className = `log-msg ${type}`;
-  msgSpan.textContent = msg; // ใช้ textContent ป้องกัน XSS ในล็อก
-
-  d.appendChild(timeSpan);
-  d.appendChild(msgSpan);
+  d.innerHTML = `<span class="log-time">[${now}]</span><span class="log-msg ${type}">${msg}</span>`;
   p.appendChild(d);
   p.scrollTop = p.scrollHeight;
-  if (p.children.length > 50) p.firstChild.remove();
+  if(p.children.length > 50) p.firstChild.remove();
 }
 
 // Helper: Clock
 function updateClock() {
-  document.getElementById('clock').textContent = new Date().toLocaleTimeString('th-TH', { hour12: false });
+  document.getElementById('clock').textContent = new Date().toLocaleTimeString('th-TH', {hour12:false});
 }
 setInterval(updateClock, 1000);
 updateClock();
 
-// FIX #8: อัปเดต live indicator ตามสถานะจริง
-function setLiveState(state) {
-  // state: 'waiting' | 'live' | 'error'
-  const el = document.getElementById('liveIndicator');
-  const txt = document.getElementById('liveText');
-  el.className = `live-indicator state-${state}`;
-  const labels = { waiting: 'WAITING', live: 'LIVE', error: 'ERROR' };
-  txt.textContent = labels[state] || 'WAITING';
-}
-
 // Helper: Formatters
 function fmtUptime(sec) {
   sec = parseInt(sec) || 0;
-  const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), s = sec % 60;
-  if (h > 0) return `${h}h ${m}m`;
+  const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60), s = sec%60;
+  if(h>0) return `${h}h ${m}m`;
   return `${m}m ${s}s`;
 }
 
-// FIX #6: timeAgo — handle invalid timestamp
 function timeAgo(ts) {
-  if (!ts) return 'ไม่ทราบ';
-  const d = new Date(ts);
-  if (isNaN(d.getTime())) return 'ไม่ทราบ';
-  const diff = Math.floor((Date.now() - d.getTime()) / 1000);
-  if (diff < 0) return 'เมื่อกี้';
-  if (diff < 60) return `เมื่อ ${diff} วินาทีที่แล้ว`;
-  if (diff < 3600) return `เมื่อ ${Math.floor(diff / 60)} นาทีที่แล้ว`;
-  return `เมื่อ ${Math.floor(diff / 3600)} ชั่วโมงที่แล้ว`;
+  const diff = Math.floor((Date.now() - new Date(ts).getTime()) / 1000);
+  if(diff < 60) return `เมื่อ ${diff} วินาทีที่แล้ว`;
+  if(diff < 3600) return `เมื่อ ${Math.floor(diff/60)} นาทีที่แล้ว`;
+  return `เมื่อ ${Math.floor(diff/3600)} ชั่วโมงที่แล้ว`;
 }
 
 function getStatusClass(status) {
-  if (!status) return 'offline';
+  if(!status) return 'offline';
   const s = status.toLowerCase();
-  if (s.includes('online') || s.includes('active') || s.includes('started')) return 'online';
-  if (s.includes('teleport') || s.includes('leaving')) return 'teleport';
+  if(s.includes('online') || s.includes('active') || s.includes('started')) return 'online';
+  if(s.includes('teleport') || s.includes('leaving')) return 'teleport';
   return 'offline';
 }
 
 function getPingClass(ping) {
   const p = parseInt(ping) || 0;
-  if (p > 150) return 'value-bad';
-  if (p > 80) return 'value-warn';
+  if(p > 150) return 'value-bad';
+  if(p > 80) return 'value-warn';
   return 'value-good';
 }
 
-// ============================================================
-// FIX #3: copyServerId — ใช้ Clipboard API สมัยใหม่แทน execCommand
-// ============================================================
-async function copyServerId(jobId) {
-  if (!jobId || jobId === 'N/A' || jobId === 'null') {
+// ระบบคัดลอก Server ID
+function copyServerId(text, event) {
+  if (event) event.stopPropagation();
+
+  if (!text || text === 'N/A' || text === 'null') {
     showToast('ไม่มี Server ID ให้คัดลอก', 'error');
     return;
   }
+
+  const el = document.createElement('textarea');
+  el.value = text;
+  el.setAttribute('readonly', '');
+  el.style.position = 'absolute';
+  el.style.left = '-9999px';
+  document.body.appendChild(el);
+  el.select();
+  
   try {
-    await navigator.clipboard.writeText(jobId);
-    showToast(`คัดลอก Server ID: ${jobId.slice(0, 8)}... สำเร็จ`);
+    document.execCommand('copy');
+    showToast(`คัดลอก Server ID: ${text.slice(0, 8)}... สำเร็จ`);
   } catch (err) {
-    // fallback สำหรับ browser ที่ไม่รองรับ Clipboard API
-    try {
-      const el = document.createElement('textarea');
-      el.value = jobId;
-      el.style.cssText = 'position:absolute;left:-9999px;top:-9999px';
-      document.body.appendChild(el);
-      el.select();
-      document.execCommand('copy');
-      document.body.removeChild(el);
-      showToast(`คัดลอก Server ID: ${jobId.slice(0, 8)}... สำเร็จ`);
-    } catch (e) {
-      showToast('ไม่สามารถคัดลอกได้', 'error');
-    }
+    showToast('ไม่สามารถคัดลอกได้', 'error');
   }
+  document.body.removeChild(el);
 }
 
-// FIX #2: ย้าย event listener มาผูกที่ grid แทน inline onclick (Event Delegation)
-// ป้องกัน XSS จาก job_id ที่มี quote หรือ JS ในชื่อ
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('sessionsGrid').addEventListener('click', (e) => {
-    const row = e.target.closest('.copyable-row');
-    if (row) {
-      e.stopPropagation();
-      const jobId = row.dataset.jobId || '';
-      copyServerId(jobId);
-    }
-  });
-});
-
+// แสดงหน้าต่างแจ้งเตือน
 function showToast(msg, type = 'success') {
   const container = document.getElementById('toastContainer');
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
   toast.textContent = msg;
   container.appendChild(toast);
+  
   setTimeout(() => {
     toast.style.opacity = '0';
     toast.style.transform = 'translateX(100%)';
@@ -814,43 +952,35 @@ function showToast(msg, type = 'success') {
   }, 3000);
 }
 
-// ============================================================
-// FIX #1 + #2: renderCard — ใช้ escapeHtml ทุก field
-//              และใช้ data-job-id แทน inline onclick
-// ============================================================
-function renderCard(row, index, isNew = true) {
+// Render Single Card
+function renderCard(row, index) {
   const sc = getStatusClass(row.status);
-  const avatarUrl = `https://www.roblox.com/headshot-thumbnail/image?userId=${encodeURIComponent(row.user_id || '')}&width=150&height=150&format=png`;
+  const ft = (row.farm_type || 'public').toLowerCase();
+  const avatarUrl = `https://www.roblox.com/headshot-thumbnail/image?userId=${row.user_id}&width=150&height=150&format=png`;
   const animDelay = (index * 0.05) + 's';
-  const animClass = isNew ? '' : 'no-anim'; // FIX #4: ไม่ animate card เก่า
-
-  const displayName = escapeHtml(row.display_name || row.player_name);
-  const playerName  = escapeHtml(row.player_name);
-  const statusText  = escapeHtml((row.status || 'OFFLINE').split(' ')[0]);
-  const gameName    = escapeHtml(row.game_name || 'Unknown Game');
-  const executor    = escapeHtml(row.executor || 'Unknown');
-  const scriptName  = escapeHtml(row.script_name || 'System Script');
-  const jobId       = row.job_id && row.job_id !== 'null' ? row.job_id : '';
-  const jobIdShort  = jobId ? escapeHtml(jobId.slice(0, 18)) + '...' : 'N/A';
-  const pingVal     = escapeHtml(String(row.ping || 'N/A'));
+  const farmBadge = ft === 'pro'
+    ? `<span class="farm-badge pro">🔒 PRO</span>`
+    : `<span class="farm-badge public">🌐 PUBLIC</span>`;
 
   return `
-    <div class="session-card status-${sc} ${animClass}" style="animation-delay: ${animDelay};" data-player="${escapeHtml(row.player_name)}">
+    <div class="session-card status-${sc} farm-${ft}" style="animation-delay: ${animDelay};">
       <div class="card-top">
         <div class="user-info">
           <div class="avatar-wrap">
-            <img class="avatar" src="${avatarUrl}" alt="${displayName}"
-              onerror="this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2248%22%3E%3Crect width=%2248%22 height=%2248%22 fill=%22%23111%22/%3E%3C/svg%3E'" />
+            <img class="avatar" src="${avatarUrl}" onerror="this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2248%22%3E%3Crect width=%2248%22 height=%2248%22 fill=%22%23111%22/%3E%3C/svg%3E'" />
             <div class="status-ring"></div>
           </div>
           <div class="user-names">
-            <div class="display-name">${displayName}</div>
-            <div class="username">@${playerName}</div>
+            <div class="display-name">${row.display_name || row.player_name}</div>
+            <div class="username">@${row.player_name}</div>
           </div>
         </div>
-        <div class="status-pill">${statusText}</div>
+        <div style="display:flex;align-items:center;gap:0.4rem;">
+          ${farmBadge}
+          <div class="status-pill">${(row.status||'OFFLINE').split(' ')[0]}</div>
+        </div>
       </div>
-
+      
       <div class="detail-grid">
         <div class="detail-row">
           <span class="detail-label">⏱️ Uptime</span>
@@ -858,153 +988,113 @@ function renderCard(row, index, isNew = true) {
         </div>
         <div class="detail-row">
           <span class="detail-label">📊 Ping</span>
-          <span class="detail-value ${getPingClass(row.ping)}">${pingVal} ms</span>
+          <span class="detail-value ${getPingClass(row.ping)}">${row.ping || 'N/A'} ms</span>
         </div>
         <div class="detail-row">
           <span class="detail-label">🎮 Game</span>
-          <span class="detail-value" title="${gameName}">${gameName}</span>
+          <span class="detail-value" title="${row.game_name || 'Unknown'}">${row.game_name || 'Unknown Game'}</span>
         </div>
         <div class="detail-row">
           <span class="detail-label">⚙️ Executor</span>
-          <span class="detail-value" style="color: var(--text-primary);">${executor}</span>
+          <span class="detail-value" style="color: var(--text-primary);">${row.executor || 'Unknown'}</span>
         </div>
-        <div class="detail-row copyable-row" data-job-id="${escapeHtml(jobId)}" title="คลิกเพื่อคัดลอก Server ID">
+        <div class="detail-row copyable-row" onclick="copyServerId('${row.job_id || ''}', event)" title="คลิกเพื่อคัดลอก Server ID">
           <span class="detail-label">🆔 Server</span>
           <span class="detail-value" style="font-size:0.75rem; color:var(--text-muted); display:flex; align-items:center; gap:0.4rem;">
-            ${jobIdShort}
+            ${(row.job_id && row.job_id !== 'null') ? row.job_id.slice(0, 18) + '...' : 'N/A'}
             <span class="copy-icon">📋</span>
           </span>
         </div>
       </div>
 
       <div class="card-footer">
-        <div class="script-badge">${scriptName}</div>
+        <div class="script-badge">${row.script_name || 'System Script'}</div>
         <div class="time-ago">${timeAgo(row.updated_at)}</div>
       </div>
     </div>`;
 }
 
-// ============================================================
-// FIX #4: render — ตรวจ diff แล้ว re-render เฉพาะ card ที่เปลี่ยน
-//         และ FIX #7: filter null/undefined ออกก่อนนับ scripts
-// ============================================================
-let prevPlayerOrder = []; // เก็บ order ล่าสุดเพื่อ detect การเรียงใหม่
+// Current filter state
+let currentFilter = 'all';
 
-function render(changedPlayers = null) {
+function setFilter(f) {
+  currentFilter = f;
+  ['all','pro','public'].forEach(t => {
+    const btn = document.getElementById('tab-' + t);
+    btn.className = 'filter-tab' + (t === f ? ' active' + (t !== 'all' ? ' ' + t : '') : (t !== 'all' ? ' ' + t : ''));
+  });
+  render();
+}
+
+// Render Dashboard
+function render() {
   const grid = document.getElementById('sessionsGrid');
-  const empty = document.getElementById('emptyState');
   const rows = Object.values(sessions);
 
+  const proRows    = rows.filter(r => (r.farm_type||'public').toLowerCase() === 'pro');
+  const publicRows = rows.filter(r => (r.farm_type||'public').toLowerCase() !== 'pro');
   const onlineCount = rows.filter(r => getStatusClass(r.status) === 'online').length;
+  const scriptsCount = new Set(rows.map(r => r.script_name)).size;
 
-  // FIX #7: filter null/undefined script_name ออกก่อนนับ
-  const scriptsCount = new Set(rows.map(r => r.script_name).filter(Boolean)).size;
-
-  document.getElementById('statOnline').textContent = onlineCount;
-  document.getElementById('statTotal').textContent = rows.length;
+  document.getElementById('statOnline').textContent  = onlineCount;
+  document.getElementById('statTotal').textContent   = rows.length;
   document.getElementById('statScripts').textContent = scriptsCount;
-  document.getElementById('statUpdate').textContent = new Date().toLocaleTimeString('th-TH', { hour12: false });
+  document.getElementById('statUpdate').textContent  = new Date().toLocaleTimeString('th-TH',{hour12:false});
+  document.getElementById('statPro').textContent     = proRows.length;
+  document.getElementById('statPublic').textContent  = publicRows.length;
+  document.getElementById('cnt-all').textContent     = rows.length;
+  document.getElementById('cnt-pro').textContent     = proRows.length;
+  document.getElementById('cnt-public').textContent  = publicRows.length;
 
-  if (rows.length === 0) {
-    grid.innerHTML = '';
-    grid.appendChild(empty);
-    prevPlayerOrder = [];
+  let filtered = rows;
+  if(currentFilter === 'pro')    filtered = proRows;
+  if(currentFilter === 'public') filtered = publicRows;
+
+  if(filtered.length === 0) {
+    const label = currentFilter === 'pro' ? '🔒 PRO' : currentFilter === 'public' ? '🌐 PUBLIC' : '';
+    grid.innerHTML = `<div class="empty-state" id="emptyState">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width: 48px; height: 48px; margin-bottom: 1rem; opacity: 0.3;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+      <h3 style="text-transform:uppercase;letter-spacing:0.05em;color:var(--text-primary);">No ${label} Sessions</h3>
+      <p style="margin-top:0.5rem;font-size:0.9rem;">ไม่มีเซสชันในกลุ่มนี้ตอนนี้</p>
+    </div>`;
     return;
   }
 
-  rows.sort((a, b) => {
-    const ao = getStatusClass(a.status) === 'online';
-    const bo = getStatusClass(b.status) === 'online';
-    if (ao && !bo) return -1;
-    if (!ao && bo) return 1;
+  filtered.sort((a,b) => {
+    const ao = getStatusClass(a.status)==='online', bo = getStatusClass(b.status)==='online';
+    if(ao && !bo) return -1;
+    if(!ao && bo) return 1;
     return new Date(b.updated_at) - new Date(a.updated_at);
   });
 
-  const newOrder = rows.map(r => r.player_name);
-  const orderChanged = JSON.stringify(newOrder) !== JSON.stringify(prevPlayerOrder);
-
-  if (orderChanged) {
-    // re-render ทั้งหมดเมื่อ order เปลี่ยน
-    // card ที่เคยมีอยู่แล้วใช้ no-anim, card ใหม่ animate
-    const existingPlayers = new Set(prevPlayerOrder);
-    grid.innerHTML = rows.map((r, index) =>
-      renderCard(r, index, !existingPlayers.has(r.player_name))
-    ).join('');
-    prevPlayerOrder = newOrder;
-  } else if (changedPlayers && changedPlayers.size > 0) {
-    // อัปเดตเฉพาะ card ที่เปลี่ยนแปลง โดยไม่ trigger animation
-    changedPlayers.forEach(playerName => {
-      const row = sessions[playerName];
-      if (!row) return;
-      const cardEl = grid.querySelector(`[data-player="${CSS.escape(playerName)}"]`);
-      if (cardEl) {
-        const index = rows.indexOf(row);
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = renderCard(row, index, false);
-        const newCard = tempDiv.firstElementChild;
-        cardEl.replaceWith(newCard);
-      }
-    });
-    // อัปเดต time-ago ทุก card
-    grid.querySelectorAll('.session-card').forEach(card => {
-      const playerName = card.dataset.player;
-      const row = sessions[playerName];
-      if (row) {
-        const timeEl = card.querySelector('.time-ago');
-        if (timeEl) timeEl.textContent = timeAgo(row.updated_at);
-      }
-    });
-  } else {
-    // ไม่มีอะไรเปลี่ยน อัปเดตแค่ time-ago
-    grid.querySelectorAll('.session-card').forEach(card => {
-      const playerName = card.dataset.player;
-      const row = sessions[playerName];
-      if (row) {
-        const timeEl = card.querySelector('.time-ago');
-        if (timeEl) timeEl.textContent = timeAgo(row.updated_at);
-      }
-    });
-  }
+  grid.innerHTML = filtered.map((r, index) => renderCard(r, index)).join('');
 }
 
 // Data Fetching
 async function loadAll() {
-  const { data, error } = await sb.from('wexz_sessions').select('*').order('updated_at', { ascending: false });
-  if (error) {
-    log('Failed to load data: ' + error.message, 'error');
-    setLiveState('error'); // FIX #8
-    return;
+  const { data, error } = await sb.from('wexz_sessions').select('*').order('updated_at', {ascending: false});
+  if(error) { 
+    log('Failed to load data: ' + error.message, 'error'); 
+    return; 
   }
   sessions = {};
-  (data || []).forEach(r => sessions[r.player_name] = r);
-  prevPlayerOrder = []; // force full re-render ครั้งแรก
+  (data||[]).forEach(r => sessions[r.player_name] = r);
   render();
-  log(`Successfully loaded ${(data || []).length} active sessions.`, 'info');
+  log(`Successfully loaded ${(data||[]).length} active sessions.`, 'info');
 }
 
-// FIX #5: Polling — เพิ่ม error logging + FIX #4 ส่ง changedPlayers
+// Polling Fallback Mechanism (ระบบดึงข้อมูลที่ไม่ใช้ WebSocket)
 function startPolling() {
   log('System Connected. Long Polling synchronization active ✓', 'success');
-  setLiveState('live'); // FIX #8
-
+  
   if (pollInterval) clearInterval(pollInterval);
-
+  
   pollInterval = setInterval(async () => {
-    const { data, error } = await sb.from('wexz_sessions').select('*').order('updated_at', { ascending: false });
-
-    // FIX #5: log error แทนที่จะ silently return
-    if (error) {
-      log('Polling error: ' + error.message, 'error');
-      setLiveState('error'); // FIX #8
-      return;
-    }
-
-    setLiveState('live'); // FIX #8: กลับมา live ถ้าก่อนหน้าเป็น error
+    const { data, error } = await sb.from('wexz_sessions').select('*').order('updated_at', {ascending: false});
+    if(error) return;
 
     const newSessions = {};
-    (data || []).forEach(r => newSessions[r.player_name] = r);
-
-    const changedPlayers = new Set();
+    (data||[]).forEach(r => newSessions[r.player_name] = r);
 
     for (const player in sessions) {
       if (!newSessions[player]) {
@@ -1015,20 +1105,17 @@ function startPolling() {
     for (const player in newSessions) {
       const isNew = !sessions[player];
       const statusChanged = !isNew && sessions[player].status !== newSessions[player].status;
-      const dataChanged = !isNew && JSON.stringify(sessions[player]) !== JSON.stringify(newSessions[player]);
 
       if (isNew || statusChanged) {
         const sc = getStatusClass(newSessions[player].status);
         const logType = sc === 'online' ? 'success' : (sc === 'offline' ? 'error' : 'info');
         log(`Status update: @${player} is now ${newSessions[player].status}`, logType);
       }
-
-      if (isNew || dataChanged) changedPlayers.add(player);
     }
 
     sessions = newSessions;
-    render(changedPlayers); // FIX #4: ส่ง set ของ card ที่เปลี่ยน
-  }, 5000);
+    render();
+  }, 5000); // อัปเดตทุก 5 วินาที
 }
 
 // Connect Handler
@@ -1036,10 +1123,10 @@ async function connect() {
   const url = document.getElementById('cfgUrl').value.trim();
   const key = document.getElementById('cfgKey').value.trim();
   const errorMsg = document.getElementById('loginError');
-
-  if (!url || !key) {
+  
+  if(!url || !key) { 
     errorMsg.style.display = 'block';
-    return;
+    return; 
   }
 
   errorMsg.style.display = 'none';
@@ -1047,33 +1134,35 @@ async function connect() {
   localStorage.setItem('wexz_key', key);
 
   sb = createClient(url, key);
-
+  
   const overlay = document.getElementById('configOverlay');
   overlay.style.opacity = '0';
   setTimeout(() => overlay.style.display = 'none', 300);
-
+  
   log('Connecting to Supabase cluster...', 'info');
   await loadAll();
-  startPolling();
+  startPolling(); // เรียกใช้ Polling เท่านั้น ไม่มีการเรียก subscribe()
 }
 
 // Initialization
 window.onload = () => {
   const url = localStorage.getItem('wexz_url');
   const key = localStorage.getItem('wexz_key');
-  if (url && key) {
+  if(url && key) {
     document.getElementById('cfgUrl').value = url;
     document.getElementById('cfgKey').value = key;
     sb = createClient(url, key);
+    
     document.getElementById('configOverlay').style.display = 'none';
+    
     loadAll().then(() => startPolling());
     log('Auto-authenticated from secure storage.', 'info');
   }
 };
 
-// อัปเดต time-ago เงียบๆ ทุก 30 วินาที โดยไม่ re-render ทั้งหมด
-setInterval(() => {
-  if (Object.keys(sessions).length > 0) render(new Set()); // FIX #4: ส่ง empty set = แค่อัปเดต time-ago
+// อัปเดตเวลา Time Ago หลังบ้านเงียบๆ
+setInterval(() => { 
+  if(Object.keys(sessions).length > 0) render(); 
 }, 30000);
 </script>
 </body>
