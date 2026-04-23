@@ -236,7 +236,6 @@
     object-fit: cover;
     background: #111;
     border: 1px solid var(--border-light);
-    filter: grayscale(20%);
   }
   .status-ring {
     position: absolute;
@@ -748,7 +747,7 @@
 
 <header>
   <div class="brand">
-    <img src="สำเนาของ ป้ายฟาร์ม (1).jpg" alt="WEXZ" class="brand-logo" onerror="this.outerHTML=`<span class='brand-text-fallback'>WEXZ</span>`" />
+    <img src="https://img1.pic.in.th/images/d820b4c5e5e29db0.png" alt="WEXZ" class="brand-logo" onerror="this.outerHTML=`<span class='brand-text-fallback'>WEXZ</span>`" />
     <span style="color: var(--text-secondary); font-weight: 500; font-size: 0.9rem;">DASHBOARD</span>
   </div>
   <div class="header-actions">
@@ -857,6 +856,9 @@ const { createClient } = supabase;
 let sb = null;
 let sessions = {};
 let pollInterval = null;
+
+// ✅ โลโก้ WEXZ สำหรับ Avatar (ใช้ลิงก์จาก pic.in.th)
+const WEXZ_LOGO_URL = 'https://img1.pic.in.th/images/d820b4c5e5e29db0.png';
 
 function log(msg, type='system') {
   const p = document.getElementById('logPanel');
@@ -970,15 +972,13 @@ function disconnect() {
   showToast('ยกเลิกการเชื่อมต่อสำเร็จ', 'success');
 }
 
-// ✅ ฟังก์ชัน renderCard ที่แก้ไขแล้ว (ใช้ ui-avatars.com)
+// ✅ ฟังก์ชัน renderCard ที่ใช้โลโก้ WEXZ แทน Avatar
 function renderCard(row, index) {
   const sc = getStatusClass(row.status);
   const ft = (row.farm_type || 'public').toLowerCase();
   
-  const userName = row.display_name || row.player_name || '?';
-  
-  // ✅ ใช้ ui-avatars.com (ทำงานได้บน Netlify 100%)
-  const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=1a1a1a&color=fff&size=150&bold=true&length=2`;
+  // ✅ ใช้โลโก้ WEXZ แทน Avatar ทุกการ์ด
+  const avatarUrl = WEXZ_LOGO_URL;
 
   const animDelay = (index * 0.05) + 's';
   const farmBadge = ft === 'pro'
