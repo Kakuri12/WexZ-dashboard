@@ -87,7 +87,6 @@
     object-fit: contain;
   }
 
-  /* กรณีรูปไม่ขึ้น ให้ใช้ Text สไตล์โลโก้แทน */
   .brand-text-fallback {
     font-family: 'Inter', sans-serif;
     font-weight: 900;
@@ -102,6 +101,26 @@
     display: flex;
     align-items: center;
     gap: 1.5rem;
+  }
+
+  /* Settings Button */
+  .settings-btn {
+    background: transparent;
+    border: 1px solid var(--border-light);
+    color: var(--text-secondary);
+    border-radius: 6px;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .settings-btn:hover {
+    color: var(--text-primary);
+    border-color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
   }
 
   .live-indicator {
@@ -235,7 +254,6 @@
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
   }
 
-  /* Status Dot instead of Top Line */
   .card-top {
     display: flex;
     align-items: flex-start;
@@ -260,7 +278,7 @@
     object-fit: cover;
     background: #111;
     border: 1px solid var(--border-light);
-    filter: grayscale(20%); /* คุมโทนภาพให้เข้ากับความดาร์ก */
+    filter: grayscale(20%);
   }
 
   .status-ring {
@@ -305,7 +323,7 @@
   .status-offline .status-pill { border-color: rgba(244, 63, 94, 0.3); color: var(--status-offline); }
   .status-teleport .status-pill { border-color: rgba(245, 158, 11, 0.3); color: var(--status-teleport); }
 
-  /* Detail Grid (Darker inside) */
+  /* Detail Grid */
   .detail-grid {
     display: flex;
     flex-direction: column;
@@ -377,7 +395,7 @@
     color: var(--text-muted);
   }
 
-  /* ระบบคลิกคัดลอก และ แจ้งเตือน Toast */
+  /* Copyable Row */
   .copyable-row {
     cursor: pointer;
     border-radius: 4px;
@@ -400,6 +418,7 @@
     opacity: 1;
   }
 
+  /* Toast */
   .toast-container {
     position: fixed;
     bottom: 2rem;
@@ -502,6 +521,25 @@
     padding: 3rem;
     width: min(480px, 90vw);
     box-shadow: 0 25px 50px rgba(255, 255, 255, 0.05);
+    position: relative;
+  }
+
+  .close-config-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 2rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    line-height: 1;
+    display: none; /* ซ่อนไว้ก่อน จะโชว์เมื่อเชื่อมต่อแล้วเท่านั้น */
+  }
+
+  .close-config-btn:hover {
+    color: var(--text-primary);
   }
 
   .config-header {
@@ -574,10 +612,38 @@
     letter-spacing: 0.1em;
     cursor: pointer;
     transition: opacity 0.2s ease;
+    flex: 1;
   }
 
   .btn-primary:hover {
     opacity: 0.8;
+  }
+
+  .btn-secondary {
+    width: 100%;
+    background: transparent;
+    color: var(--status-offline);
+    border: 1px solid var(--status-offline);
+    border-radius: 6px;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex: 1;
+    display: none; /* ซ่อนไว้ก่อน จะโชว์เมื่อต้องการกด Disconnect */
+  }
+
+  .btn-secondary:hover {
+    background: var(--status-offline-bg);
+  }
+
+  .button-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
   }
 
   /* Scrollbar */
@@ -652,7 +718,6 @@
 
   .filter-tab.active .tab-count { background: rgba(0,0,0,0.2); }
 
-  /* farm type badge บน card */
   .farm-badge {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.6rem;
@@ -676,7 +741,6 @@
     border: 1px solid rgba(52,211,153,0.25);
   }
 
-  /* pro card accent */
   .session-card.farm-pro { border-color: rgba(167,139,250,0.2); }
   .session-card.farm-pro:hover { border-color: rgba(167,139,250,0.4); }
 
@@ -726,6 +790,9 @@
 
 <div class="config-overlay" id="configOverlay">
   <div class="config-box">
+    <!-- ปุ่มปิด (จะแสดงก็ต่อเมื่อเชื่อมต่อแล้วเท่านั้น) -->
+    <button class="close-config-btn" id="closeConfigBtn" onclick="closeConfig()" title="ปิดหน้าต่าง">&times;</button>
+
     <div class="config-header">
       <div class="config-title">Connect Database</div>
       <div class="config-subtitle">กรุณาใส่ข้อมูล Supabase เพื่อเข้าสู่ระบบ WEXZ</div>
@@ -743,17 +810,27 @@
 
     <div class="error-msg" id="loginError">⚠️ ข้อมูลไม่ครบถ้วน กรุณาตรวจสอบ URL และ Key</div>
 
-    <button class="btn-primary" onclick="connect()">Connect</button>
+    <div class="button-group">
+      <button class="btn-primary" onclick="connect()">Connect</button>
+      <!-- ปุ่ม Disconnect (จะแสดงก็ต่อเมื่อเชื่อมต่อแล้วเท่านั้น) -->
+      <button class="btn-secondary" id="disconnectBtn" onclick="disconnect()">Disconnect</button>
+    </div>
   </div>
 </div>
 
 <header>
   <div class="brand">
-    <!-- แก้ไขการใช้ Quotes ในส่วน onerror ด้วยการใช้ Backticks แทนเพื่อป้องกัน SyntaxError -->
     <img src="สำเนาของ ป้ายฟาร์ม (1).jpg" alt="WEXZ" class="brand-logo" onerror="this.outerHTML=`<span class='brand-text-fallback'>WEXZ</span>`" />
     <span style="color: var(--text-secondary); font-weight: 500; font-size: 0.9rem;">DASHBOARD</span>
   </div>
   <div class="header-actions">
+    <!-- ปุ่มตั้งค่าเรียกหน้า Config -->
+    <button class="settings-btn" onclick="openConfig()" title="Database Settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+    </button>
     <div class="live-indicator">
       <div class="live-dot"></div>
       SYNCING
@@ -851,17 +928,15 @@
   </div>
 </div>
 
-<!-- เพิ่มคอนเทนเนอร์สำหรับใส่ Toast การแจ้งเตือน -->
 <div id="toastContainer" class="toast-container"></div>
 
 <script>
-// ระวัง! อย่าเรียกใช้คำสั่ง websocket หรือ subscribe เพื่อป้องกัน Error ใน Canvas
 const { createClient } = supabase;
 let sb = null;
 let sessions = {};
 let pollInterval = null;
 
-// Helper: Logging
+// Helpers
 function log(msg, type='system') {
   const p = document.getElementById('logPanel');
   const now = new Date().toLocaleTimeString('th-TH', {hour12:false});
@@ -873,14 +948,12 @@ function log(msg, type='system') {
   if(p.children.length > 50) p.firstChild.remove();
 }
 
-// Helper: Clock
 function updateClock() {
   document.getElementById('clock').textContent = new Date().toLocaleTimeString('th-TH', {hour12:false});
 }
 setInterval(updateClock, 1000);
 updateClock();
 
-// Helper: Formatters
 function fmtUptime(sec) {
   sec = parseInt(sec) || 0;
   const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60), s = sec%60;
@@ -910,7 +983,6 @@ function getPingClass(ping) {
   return 'value-good';
 }
 
-// ระบบคัดลอก Server ID
 function copyServerId(text, event) {
   if (event) event.stopPropagation();
 
@@ -936,7 +1008,6 @@ function copyServerId(text, event) {
   document.body.removeChild(el);
 }
 
-// แสดงหน้าต่างแจ้งเตือน
 function showToast(msg, type = 'success') {
   const container = document.getElementById('toastContainer');
   const toast = document.createElement('div');
@@ -952,7 +1023,43 @@ function showToast(msg, type = 'success') {
   }, 3000);
 }
 
-// Render Single Card
+// ── หน้าต่าง Config & Disconnect ──
+function openConfig() {
+  const overlay = document.getElementById('configOverlay');
+  overlay.style.display = 'flex';
+  setTimeout(() => overlay.style.opacity = '1', 10);
+  
+  const isConnected = !!localStorage.getItem('wexz_url');
+  document.getElementById('closeConfigBtn').style.display = isConnected ? 'block' : 'none';
+  document.getElementById('disconnectBtn').style.display = isConnected ? 'block' : 'none';
+}
+
+function closeConfig() {
+  const overlay = document.getElementById('configOverlay');
+  overlay.style.opacity = '0';
+  setTimeout(() => overlay.style.display = 'none', 300);
+}
+
+function disconnect() {
+  localStorage.removeItem('wexz_url');
+  localStorage.removeItem('wexz_key');
+  document.getElementById('cfgUrl').value = '';
+  document.getElementById('cfgKey').value = '';
+  
+  sb = null;
+  if(pollInterval) clearInterval(pollInterval);
+  
+  sessions = {};
+  render();
+  
+  document.getElementById('closeConfigBtn').style.display = 'none';
+  document.getElementById('disconnectBtn').style.display = 'none';
+  
+  log('Disconnected from database. Cleared credentials.', 'error');
+  showToast('ยกเลิกการเชื่อมต่อสำเร็จ', 'success');
+}
+
+// Render Functions
 function renderCard(row, index) {
   const sc = getStatusClass(row.status);
   const ft = (row.farm_type || 'public').toLowerCase();
@@ -1014,9 +1121,7 @@ function renderCard(row, index) {
     </div>`;
 }
 
-// Current filter state
 let currentFilter = 'all';
-
 function setFilter(f) {
   currentFilter = f;
   ['all','pro','public'].forEach(t => {
@@ -1026,7 +1131,6 @@ function setFilter(f) {
   render();
 }
 
-// Render Dashboard
 function render() {
   const grid = document.getElementById('sessionsGrid');
   const rows = Object.values(sessions);
@@ -1070,8 +1174,8 @@ function render() {
   grid.innerHTML = filtered.map((r, index) => renderCard(r, index)).join('');
 }
 
-// Data Fetching
 async function loadAll() {
+  if (!sb) return;
   const { data, error } = await sb.from('wexz_sessions').select('*').order('updated_at', {ascending: false});
   if(error) { 
     log('Failed to load data: ' + error.message, 'error'); 
@@ -1083,13 +1187,13 @@ async function loadAll() {
   log(`Successfully loaded ${(data||[]).length} active sessions.`, 'info');
 }
 
-// Polling Fallback Mechanism (ระบบดึงข้อมูลที่ไม่ใช้ WebSocket)
 function startPolling() {
   log('System Connected. Long Polling synchronization active ✓', 'success');
   
   if (pollInterval) clearInterval(pollInterval);
   
   pollInterval = setInterval(async () => {
+    if (!sb) return;
     const { data, error } = await sb.from('wexz_sessions').select('*').order('updated_at', {ascending: false});
     if(error) return;
 
@@ -1115,10 +1219,9 @@ function startPolling() {
 
     sessions = newSessions;
     render();
-  }, 5000); // อัปเดตทุก 5 วินาที
+  }, 5000);
 }
 
-// Connect Handler
 async function connect() {
   const url = document.getElementById('cfgUrl').value.trim();
   const key = document.getElementById('cfgKey').value.trim();
@@ -1135,16 +1238,14 @@ async function connect() {
 
   sb = createClient(url, key);
   
-  const overlay = document.getElementById('configOverlay');
-  overlay.style.opacity = '0';
-  setTimeout(() => overlay.style.display = 'none', 300);
+  closeConfig();
   
   log('Connecting to Supabase cluster...', 'info');
   await loadAll();
-  startPolling(); // เรียกใช้ Polling เท่านั้น ไม่มีการเรียก subscribe()
+  startPolling();
+  showToast('เชื่อมต่อสำเร็จ!', 'success');
 }
 
-// Initialization
 window.onload = () => {
   const url = localStorage.getItem('wexz_url');
   const key = localStorage.getItem('wexz_key');
@@ -1157,10 +1258,12 @@ window.onload = () => {
     
     loadAll().then(() => startPolling());
     log('Auto-authenticated from secure storage.', 'info');
+  } else {
+    // โชว์หน้าต่างตั้งแต่แรกถ้าไม่มีการเชื่อมต่อ
+    openConfig();
   }
 };
 
-// อัปเดตเวลา Time Ago หลังบ้านเงียบๆ
 setInterval(() => { 
   if(Object.keys(sessions).length > 0) render(); 
 }, 30000);
