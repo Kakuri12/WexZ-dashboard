@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WexZ | Live Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@300;400;600;700&display=swap');
+
+  :root {
+    --bg: #080b10;
+    --bg2: #0d1117;
+    --bg3: #111820;
+    --border: rgba(0,255,180,0.12);
+    --border2: rgba(0,255,180,0.25);
+    --green: #00ffb4;
+    --green2: #00c98a;
+    --red: #ff4560;
+    --yellow: #ffc107;
+    --blue: #4facfe;
+    --text: #e0f0ea;
+    --muted: #4a6670;
+    --card: #0d1820;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Sora', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 10%, rgba(0,255,180,0.04) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 80% 80%, rgba(79,172,254,0.04) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .scanline {
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  #app { position: relative; z-index: 1; }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(8,11,16,0.9);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: 0.2em;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .logo-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%,100% { opacity:1; box-shadow: 0 0 0 0 rgba(0,255,180,0.4); }
+    50% { opacity:0.7; box-shadow: 0 0 0 6px rgba(0,255,180,0); }
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .live-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--green);
+    color: var(--green);
+    letter-spacing: 0.15em;
+    animation: pulse 2s infinite;
+  }
+
+  .time-display {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .main { padding: 2rem; max-width: 1400px; margin: 0 auto; }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+    opacity: 0.5;
+  }
+
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  .stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--green);
+    line-height: 1;
+  }
+
+  .stat-sub {
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .section-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .sessions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1rem;
+  }
+
+  .session-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    transition: border-color 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .session-card:hover { border-color: var(--border2); }
+
+  .session-card.online::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: var(--green);
+  }
+
+  .session-card.offline::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: var(--red);
+  }
+
+  .session-card.teleport::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: var(--yellow);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    border: 2px solid var(--border2);
+    overflow: hidden;
+    flex-shrink: 0;
+    background: var(--bg3);
+  }
+
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+  .player-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  .player-handle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  .status-badge {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    padding: 3px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+  }
+
+  .status-badge.online { background: rgba(0,255,180,0.1); color: var(--green); border: 1px solid rgba(0,255,180,0.3); }
+  .status-badge.offline { background: rgba(255,69,96,0.1); color: var(--red); border: 1px solid rgba(255,69,96,0.3); }
+  .status-badge.teleport { background: rgba(255,193,7,0.1); color: var(--yellow); border: 1px solid rgba(255,193,7,0.3); }
+  .status-badge.crash { background: rgba(255,69,96,0.1); color: var(--red); border: 1px solid rgba(255,69,96,0.3); }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem;
+  }
+
+  .info-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: 0.4rem 0.6rem;
+    background: var(--bg3);
+    border-radius: 6px;
+  }
+
+  .info-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .info-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .info-value.green { color: var(--green); }
+  .info-value.red { color: var(--red); }
+  .info-value.yellow { color: var(--yellow); }
+  .info-value.blue { color: var(--blue); }
+
+  .card-footer {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .script-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--blue);
+    background: rgba(79,172,254,0.08);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(79,172,254,0.2);
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .last-seen {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--muted);
+  }
+
+  .empty-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+  }
+
+  .empty-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+  }
+
+  .config-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(8,11,16,0.96);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+
+  .config-box {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 16px;
+    padding: 2.5rem;
+    width: min(480px, 90vw);
+  }
+
+  .config-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.25rem;
+  }
+
+  .config-sub {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 2rem;
+  }
+
+  .config-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  .config-input {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.65rem 0.85rem;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    outline: none;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s;
+  }
+
+  .config-input:focus { border-color: var(--green2); }
+
+  .config-btn {
+    width: 100%;
+    background: var(--green);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 0.5rem;
+  }
+
+  .config-btn:hover { opacity: 0.85; }
+
+  .log-panel {
+    margin-top: 2rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    max-height: 160px;
+    overflow-y: auto;
+  }
+
+  .log-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    padding: 2px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+
+  .log-line .ts { color: rgba(0,255,180,0.4); margin-right: 0.5rem; }
+  .log-line.success { color: var(--green2); }
+  .log-line.error { color: var(--red); }
+  .log-line.info { color: var(--blue); }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+</style>
+</head>
+<body>
+<div class="scanline"></div>
+<div id="app">
+
+  <!-- Config Overlay -->
+  <div class="config-overlay" id="configOverlay">
+    <div class="config-box">
+      <div class="config-title">⚡ WEXZ DASHBOARD</div>
+      <div class="config-sub">ใส่ข้อมูล Supabase เพื่อเชื่อมต่อ</div>
+
+      <div class="config-label">Supabase URL</div>
+      <input class="config-input" id="cfgUrl" placeholder="https://xxxx.supabase.co" />
+
+      <div class="config-label">Supabase Anon Key</div>
+      <input class="config-input" id="cfgKey" placeholder="eyJhbGciOi..." type="password" />
+
+      <button class="config-btn" onclick="connect()">CONNECT ›</button>
+    </div>
+  </div>
+
+  <header>
+    <div class="logo">
+      <div class="logo-dot"></div>
+      WEXZ // DASHBOARD
+    </div>
+    <div class="header-right">
+      <span class="live-badge">LIVE</span>
+      <span class="time-display" id="clock">--:--:--</span>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">ONLINE NOW</div>
+        <div class="stat-value" id="statOnline">0</div>
+        <div class="stat-sub">players active</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">TOTAL SESSIONS</div>
+        <div class="stat-value" id="statTotal">0</div>
+        <div class="stat-sub">all time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">SCRIPTS RUNNING</div>
+        <div class="stat-value" id="statScripts">0</div>
+        <div class="stat-sub">unique maps</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">LAST UPDATE</div>
+        <div class="stat-value" style="font-size:1rem;padding-top:0.3rem" id="statUpdate">--</div>
+        <div class="stat-sub">real-time sync</div>
+      </div>
+    </div>
+
+    <div class="section-title">// ACTIVE SESSIONS</div>
+    <div class="sessions-grid" id="sessionsGrid">
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">◈</div>
+        <div class="empty-title">NO ACTIVE SESSIONS</div>
+        <div style="font-size:0.75rem">รันสคริปต์ในเกมเพื่อเริ่ม tracking</div>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:2rem">// ACTIVITY LOG</div>
+    <div class="log-panel" id="logPanel">
+      <div class="log-line info"><span class="ts">SYSTEM</span>Dashboard initialized. Waiting for connection...</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const { createClient } = supabase;
+let sb = null;
+let sessions = {};
+let channel = null;
+
+function log(msg, type='') {
+  const p = document.getElementById('logPanel');
+  const now = new Date().toLocaleTimeString('th-TH', {hour12:false});
+  const d = document.createElement('div');
+  d.className = 'log-line ' + type;
+  d.innerHTML = `<span class="ts">${now}</span>${msg}`;
+  p.insertBefore(d, p.firstChild);
+  if(p.children.length > 50) p.lastChild.remove();
+}
+
+function updateClock() {
+  document.getElementById('clock').textContent =
+    new Date().toLocaleTimeString('th-TH', {hour12:false});
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+function fmtUptime(sec) {
+  sec = parseInt(sec) || 0;
+  const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60), s = sec%60;
+  if(h>0) return `${h}h ${m}m`;
+  return `${m}m ${s}s`;
+}
+
+function timeAgo(ts) {
+  const diff = Math.floor((Date.now() - new Date(ts).getTime()) / 1000);
+  if(diff < 60) return `${diff}s ago`;
+  if(diff < 3600) return `${Math.floor(diff/60)}m ago`;
+  return `${Math.floor(diff/3600)}h ago`;
+}
+
+function getStatusClass(status) {
+  if(!status) return 'offline';
+  const s = status.toLowerCase();
+  if(s.includes('online') || s.includes('active') || s.includes('started')) return 'online';
+  if(s.includes('teleport') || s.includes('leaving')) return 'teleport';
+  if(s.includes('crash') || s.includes('frozen')) return 'crash';
+  return 'offline';
+}
+
+function renderCard(row) {
+  const sc = getStatusClass(row.status);
+  const avatarUrl = `https://www.roblox.com/headshot-thumbnail/image?userId=${row.user_id}&width=100&height=100&format=png`;
+  return `
+    <div class="session-card ${sc}">
+      <div class="card-header">
+        <div class="avatar"><img src="${avatarUrl}" onerror="this.style.display='none'" /></div>
+        <div>
+          <div class="player-name">${row.display_name || row.player_name}</div>
+          <div class="player-handle">@${row.player_name}</div>
+        </div>
+        <div class="status-badge ${sc}">${(row.status||'OFFLINE').split(' ')[0].toUpperCase()}</div>
+      </div>
+      <div class="card-grid">
+        <div class="info-row">
+          <div class="info-label">UPTIME</div>
+          <div class="info-value green">${fmtUptime(row.uptime_secs)}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">PING</div>
+          <div class="info-value ${parseInt(row.ping)>100?'red':parseInt(row.ping)>60?'yellow':'green'}">${row.ping||'N/A'}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">PLAYERS</div>
+          <div class="info-value blue">${row.player_count||'?'}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">EXECUTOR</div>
+          <div class="info-value">${row.executor||'Unknown'}</div>
+        </div>
+        <div class="info-row" style="grid-column:1/-1">
+          <div class="info-label">GAME</div>
+          <div class="info-value blue">${row.game_name||'Unknown'}</div>
+        </div>
+        <div class="info-row" style="grid-column:1/-1">
+          <div class="info-label">SERVER ID</div>
+          <div class="info-value" style="font-size:0.6rem">${(row.job_id||'').slice(0,32)}...</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="script-tag">◈ ${row.script_name||'Unknown Script'}</div>
+        <div class="last-seen">${timeAgo(row.updated_at)}</div>
+      </div>
+    </div>`;
+}
+
+function render() {
+  const grid = document.getElementById('sessionsGrid');
+  const empty = document.getElementById('emptyState');
+  const rows = Object.values(sessions);
+
+  const online = rows.filter(r => getStatusClass(r.status) === 'online').length;
+  const scripts = new Set(rows.map(r=>r.script_name)).size;
+
+  document.getElementById('statOnline').textContent = online;
+  document.getElementById('statTotal').textContent = rows.length;
+  document.getElementById('statScripts').textContent = scripts;
+  document.getElementById('statUpdate').textContent = new Date().toLocaleTimeString('th-TH',{hour12:false});
+
+  if(rows.length === 0) {
+    grid.innerHTML = '';
+    grid.appendChild(empty);
+    return;
+  }
+
+  if(grid.contains(empty)) grid.removeChild(empty);
+
+  rows.sort((a,b) => {
+    const ao = getStatusClass(a.status)==='online', bo = getStatusClass(b.status)==='online';
+    if(ao && !bo) return -1;
+    if(!ao && bo) return 1;
+    return new Date(b.updated_at) - new Date(a.updated_at);
+  });
+
+  grid.innerHTML = rows.map(renderCard).join('');
+}
+
+async function loadAll() {
+  const { data, error } = await sb.from('wexz_sessions').select('*').order('updated_at', {ascending: false});
+  if(error) { log('Load error: ' + error.message, 'error'); return; }
+  sessions = {};
+  (data||[]).forEach(r => sessions[r.player_name] = r);
+  render();
+  log(`Loaded ${(data||[]).length} sessions`, 'success');
+}
+
+function subscribe() {
+  channel = sb.channel('wexz-live')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'wexz_sessions' }, payload => {
+      const r = payload.new || payload.old;
+      if(payload.eventType === 'DELETE') {
+        delete sessions[r.player_name];
+        log(`Session removed: @${r.player_name}`, 'error');
+      } else {
+        sessions[r.player_name] = payload.new;
+        const sc = getStatusClass(payload.new.status);
+        log(`@${payload.new.player_name} — ${payload.new.status}`, sc==='online'?'success':sc==='offline'?'error':'info');
+      }
+      render();
+    })
+    .subscribe(status => {
+      if(status === 'SUBSCRIBED') log('Real-time connected ✓', 'success');
+    });
+}
+
+async function connect() {
+  const url = document.getElementById('cfgUrl').value.trim();
+  const key = document.getElementById('cfgKey').value.trim();
+  if(!url || !key) { alert('กรุณาใส่ URL และ Key'); return; }
+
+  localStorage.setItem('wexz_url', url);
+  localStorage.setItem('wexz_key', key);
+
+  sb = createClient(url, key);
+  document.getElementById('configOverlay').style.display = 'none';
+  log('Connecting to Supabase...', 'info');
+  await loadAll();
+  subscribe();
+}
+
+window.onload = () => {
+  const url = localStorage.getItem('wexz_url');
+  const key = localStorage.getItem('wexz_key');
+  if(url && key) {
+    document.getElementById('cfgUrl').value = url;
+    document.getElementById('cfgKey').value = key;
+    sb = createClient(url, key);
+    document.getElementById('configOverlay').style.display = 'none';
+    loadAll().then(() => subscribe());
+    log('Auto-connected from saved config', 'success');
+  }
+};
+
+setInterval(() => { if(Object.keys(sessions).length > 0) render(); }, 30000);
+</script>
+</body>
+</html>
