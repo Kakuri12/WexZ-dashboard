@@ -585,141 +585,6 @@
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border-highlight); border-radius: 10px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
-
-  /* ── Farm Type Filter Tabs ── */
-  .filter-bar {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-  }
-
-  .filter-tab {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1.1rem;
-    border-radius: 6px;
-    border: 1px solid var(--border-light);
-    background: transparent;
-    color: var(--text-secondary);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-
-  .filter-tab:hover {
-    border-color: var(--border-highlight);
-    color: var(--text-primary);
-    background: rgba(255,255,255,0.04);
-  }
-
-  .filter-tab.active {
-    background: var(--text-primary);
-    color: var(--bg-base);
-    border-color: var(--text-primary);
-  }
-
-  .filter-tab.active.pro {
-    background: #a78bfa;
-    border-color: #a78bfa;
-    color: #1a0a2e;
-  }
-
-  .filter-tab.active.public {
-    background: #34d399;
-    border-color: #34d399;
-    color: #022c1a;
-  }
-
-  .tab-count {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 18px;
-    height: 18px;
-    border-radius: 20px;
-    font-size: 0.65rem;
-    font-weight: 700;
-    padding: 0 5px;
-    background: rgba(255,255,255,0.12);
-  }
-
-  .filter-tab.active .tab-count { background: rgba(0,0,0,0.2); }
-
-  /* farm type badge บน card */
-  .farm-badge {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.6rem;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 4px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    flex-shrink: 0;
-  }
-
-  .farm-badge.pro {
-    background: rgba(167,139,250,0.15);
-    color: #a78bfa;
-    border: 1px solid rgba(167,139,250,0.3);
-  }
-
-  .farm-badge.public {
-    background: rgba(52,211,153,0.12);
-    color: #34d399;
-    border: 1px solid rgba(52,211,153,0.25);
-  }
-
-  /* pro card accent */
-  .session-card.farm-pro { border-color: rgba(167,139,250,0.2); }
-  .session-card.farm-pro:hover { border-color: rgba(167,139,250,0.4); }
-
-  /* stat split row */
-  .stats-split {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .split-card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-light);
-    border-radius: 10px;
-    padding: 1rem 1.25rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .split-icon {
-    font-size: 1.4rem;
-    flex-shrink: 0;
-  }
-
-  .split-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 2px;
-  }
-
-  .split-value {
-    font-size: 1.4rem;
-    font-weight: 700;
-    line-height: 1;
-  }
-
-  .split-value.pro { color: #a78bfa; }
-  .split-value.public { color: #34d399; }
 </style>
 </head>
 <body>
@@ -787,41 +652,10 @@
     </div>
   </div>
 
-  <!-- Pro / Public Split Stats -->
-  <div class="stats-split">
-    <div class="split-card">
-      <div class="split-icon">🔒</div>
-      <div>
-        <div class="split-label">Pro Farm</div>
-        <div class="split-value pro" id="statPro">0</div>
-      </div>
-    </div>
-    <div class="split-card">
-      <div class="split-icon">🌐</div>
-      <div>
-        <div class="split-label">Public Farm</div>
-        <div class="split-value public" id="statPublic">0</div>
-      </div>
-    </div>
-  </div>
-
   <!-- Active Sessions -->
   <div class="section-header">
     <h2 class="section-title">Session Monitoring</h2>
     <div class="section-line"></div>
-  </div>
-
-  <!-- Filter Tabs -->
-  <div class="filter-bar">
-    <button class="filter-tab active" id="tab-all" onclick="setFilter('all')">
-      ALL <span class="tab-count" id="cnt-all">0</span>
-    </button>
-    <button class="filter-tab pro" id="tab-pro" onclick="setFilter('pro')">
-      🔒 PRO <span class="tab-count" id="cnt-pro">0</span>
-    </button>
-    <button class="filter-tab public" id="tab-public" onclick="setFilter('public')">
-      🌐 PUBLIC <span class="tab-count" id="cnt-public">0</span>
-    </button>
   </div>
 
   <div class="sessions-grid" id="sessionsGrid">
@@ -955,15 +789,12 @@ function showToast(msg, type = 'success') {
 // Render Single Card
 function renderCard(row, index) {
   const sc = getStatusClass(row.status);
-  const ft = (row.farm_type || 'public').toLowerCase();
   const avatarUrl = `https://www.roblox.com/headshot-thumbnail/image?userId=${row.user_id}&width=150&height=150&format=png`;
   const animDelay = (index * 0.05) + 's';
-  const farmBadge = ft === 'pro'
-    ? `<span class="farm-badge pro">🔒 PRO</span>`
-    : `<span class="farm-badge public">🌐 PUBLIC</span>`;
-
+  
+  // แกัไข onerror ให้ใช้ URL-Encoded string หลีกเลี่ยง Syntax Error ใน HTML/JS string nesting
   return `
-    <div class="session-card status-${sc} farm-${ft}" style="animation-delay: ${animDelay};">
+    <div class="session-card status-${sc}" style="animation-delay: ${animDelay};">
       <div class="card-top">
         <div class="user-info">
           <div class="avatar-wrap">
@@ -975,10 +806,7 @@ function renderCard(row, index) {
             <div class="username">@${row.player_name}</div>
           </div>
         </div>
-        <div style="display:flex;align-items:center;gap:0.4rem;">
-          ${farmBadge}
-          <div class="status-pill">${(row.status||'OFFLINE').split(' ')[0]}</div>
-        </div>
+        <div class="status-pill">${(row.status||'OFFLINE').split(' ')[0]}</div>
       </div>
       
       <div class="detail-grid">
@@ -1014,60 +842,34 @@ function renderCard(row, index) {
     </div>`;
 }
 
-// Current filter state
-let currentFilter = 'all';
-
-function setFilter(f) {
-  currentFilter = f;
-  ['all','pro','public'].forEach(t => {
-    const btn = document.getElementById('tab-' + t);
-    btn.className = 'filter-tab' + (t === f ? ' active' + (t !== 'all' ? ' ' + t : '') : (t !== 'all' ? ' ' + t : ''));
-  });
-  render();
-}
-
 // Render Dashboard
 function render() {
   const grid = document.getElementById('sessionsGrid');
+  const empty = document.getElementById('emptyState');
   const rows = Object.values(sessions);
 
-  const proRows    = rows.filter(r => (r.farm_type||'public').toLowerCase() === 'pro');
-  const publicRows = rows.filter(r => (r.farm_type||'public').toLowerCase() !== 'pro');
   const onlineCount = rows.filter(r => getStatusClass(r.status) === 'online').length;
   const scriptsCount = new Set(rows.map(r => r.script_name)).size;
 
-  document.getElementById('statOnline').textContent  = onlineCount;
-  document.getElementById('statTotal').textContent   = rows.length;
+  document.getElementById('statOnline').textContent = onlineCount;
+  document.getElementById('statTotal').textContent = rows.length;
   document.getElementById('statScripts').textContent = scriptsCount;
-  document.getElementById('statUpdate').textContent  = new Date().toLocaleTimeString('th-TH',{hour12:false});
-  document.getElementById('statPro').textContent     = proRows.length;
-  document.getElementById('statPublic').textContent  = publicRows.length;
-  document.getElementById('cnt-all').textContent     = rows.length;
-  document.getElementById('cnt-pro').textContent     = proRows.length;
-  document.getElementById('cnt-public').textContent  = publicRows.length;
+  document.getElementById('statUpdate').textContent = new Date().toLocaleTimeString('th-TH',{hour12:false});
 
-  let filtered = rows;
-  if(currentFilter === 'pro')    filtered = proRows;
-  if(currentFilter === 'public') filtered = publicRows;
-
-  if(filtered.length === 0) {
-    const label = currentFilter === 'pro' ? '🔒 PRO' : currentFilter === 'public' ? '🌐 PUBLIC' : '';
-    grid.innerHTML = `<div class="empty-state" id="emptyState">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width: 48px; height: 48px; margin-bottom: 1rem; opacity: 0.3;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-      <h3 style="text-transform:uppercase;letter-spacing:0.05em;color:var(--text-primary);">No ${label} Sessions</h3>
-      <p style="margin-top:0.5rem;font-size:0.9rem;">ไม่มีเซสชันในกลุ่มนี้ตอนนี้</p>
-    </div>`;
+  if(rows.length === 0) {
+    grid.innerHTML = '';
+    grid.appendChild(empty);
     return;
   }
 
-  filtered.sort((a,b) => {
+  rows.sort((a,b) => {
     const ao = getStatusClass(a.status)==='online', bo = getStatusClass(b.status)==='online';
     if(ao && !bo) return -1;
     if(!ao && bo) return 1;
     return new Date(b.updated_at) - new Date(a.updated_at);
   });
 
-  grid.innerHTML = filtered.map((r, index) => renderCard(r, index)).join('');
+  grid.innerHTML = rows.map((r, index) => renderCard(r, index)).join('');
 }
 
 // Data Fetching
